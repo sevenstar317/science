@@ -1,0 +1,46 @@
+extends layout
+
+block contentHead
+	link( href="/css/fileinput.min.css", rel="stylesheet", media="screen" )
+	script( type="text/javascript" src="/js/fileinput.min.js" )
+	script( type="text/javascript" src="/socket.io/socket.io.js" )
+	script( type="text/javascript" src="/js/admin-import-tests.js" )
+
+block content
+	h3 Import Tests
+
+	form.margin-top-20(  )
+		div.import-file
+			h4 Contents
+			div.filter-verified-status.inline-block
+			label.margin-right-20( onclick="selectContentType('test')" )
+				input( type="radio" name="content_type" checked )
+				| &nbsp;&nbsp;Tests
+			label.margin-right-20( onclick="selectContentType('syllabus')" )
+				input( type="radio" name="content_type" )
+				| &nbsp;&nbsp;Syllabus/Board
+			input#csv_file( type="file" name="csv_file" multiple=false )
+		div.input-group
+			button.btn.btn-default.btn-import.hidden( type="button" onclick="importTests()" ) Import
+
+	div.clear-both
+	div.import-result.inline-block.full-width.margin-top-10.hidden
+		h4 Result
+		div#import-total-count.inline-block.full-width
+			p.title.pull-left Total Number :&nbsp;&nbsp;
+			p.value
+		div#import-imported-count.inline-block.full-width
+			p.title.pull-left Imported Number :&nbsp;&nbsp;
+			p.value
+		div#import-failed-rows.inline-block.full-width
+			p.title.pull-left Failed Rows :&nbsp;&nbsp;
+			p.value
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			sapn.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+			span#processing.processing 0%
+
+	div#alert-modal.hidden
+

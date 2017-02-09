@@ -1,0 +1,39 @@
+extends layout
+
+block contentHead
+	script( type="text/javascript" src="/js/admin-manage-users.js" )
+
+block content
+	h2 Manage Users
+	div.col-sm-8.classmate-search.input-group
+		input#search.form-control.form-search( type="text" placeholder="Search by Name or Email" name="search" )
+		div.input-group-btn
+			button.btn.btn-default.glyphicon.glyphicon-search( type="button" onclick="searchUser()" )
+
+	div#not-found.hidden
+		h4.text-muted Did Not Found
+
+	div#users.classmates-block.hidden
+		div.classmates-group.inline-block
+			div.classmates
+
+	div.classmate-profile.hidden
+		div.margin-bottom-10
+			a.btn.btn-default( href="#" onclick="showSearchList()" ) Show List
+		img.user-photo
+		div.second-info
+			p.school-name 
+			p.grade 
+			p.email
+			p.name
+			p.verified-status.pull-left
+			p.disable-status
+			a.btn.btn-default( href="#" )
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+
+	div#alert-modal.hidden
+

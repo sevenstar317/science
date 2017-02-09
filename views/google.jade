@@ -1,0 +1,26 @@
+extends layout
+
+block contentHead
+	link( href="/css/offcanvas.css", rel="stylesheet", media="screen" )
+	script( src="/js/offcanvas.js" )
+	script( src="/js/afterLogin.js" )
+	script( src="/js/social-share.js" )
+	script(src="https://apis.google.com/js/platform.js" async defer / )
+	
+	
+block content 
+	div.margin-top-20.col-center
+		div.user-info
+			img(style="heigth:100px;width:100px;border-radius:20px;")#user-profile-image( src="#{userphoto}")
+			div.profile-name #{username}
+			div#percentile
+				span#user-percentile You are the part of 'Science is Fun at ' 
+				span.schoolname #{schoolname} 
+				p.user-percentage
+				
+				span#caption 
+				input#gradename( type="hidden" name="gradename" value="#{gradename}" )
+				input#syllabusname( type="hidden" name="question" value="#{syllabusname}" )
+				input#userid( type="hidden" name="question" value="#{userid}" )
+				input#userschool( type="hidden" value="#{schoolname}" )
+				//input#logintype( type="hidden" value="#{logintype}" )

@@ -1,0 +1,163 @@
+.profile-edit{
+    margin-left: 11px;
+    margin-top: 50px;
+
+    .dropdown-toggle{
+        text-align: left;
+    }
+
+    .list-school{
+        margin: 11px auto 10px;
+        overflow-y: scroll;
+        height: 350px;
+    }
+
+    .add-manual{
+        margin: 11px auto 10px;
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+    }
+
+    .btn-list,
+    .btn-map,
+    .btn-add-manually{
+        margin-right: 10px;
+    }
+
+    .btn-list .icon,
+    .btn-map .icon,
+    .btn-add-manually .icon{
+        display: inline-block;
+        background: url("../images/sprite.png");
+        margin-right: 5px;
+    }
+
+    .btn-list .icon{
+        background-position: -810px 0;
+        width: 16px;
+        height: 11px;
+    }
+
+    .btn-map .icon{
+        background-position: -826px 0;
+        width: 12px;
+        height: 16px;
+    }
+
+    .btn-add-manually .icon{
+        background-position: -838px 0;
+        width: 11px;
+        height: 11px;
+    }
+}
+
+.btn-list .icon,
+.btn-map .icon,
+.btn-add-manually .icon{
+    display: inline-block;
+    background: url("../images/sprite.png");
+    margin-right: 5px;
+}
+
+.btn-map .icon{
+    background-position: -826px 0;
+    width: 12px;
+    height: 16px;
+}
+
+.btn-add-manually .icon{
+    background-position: -838px 0;
+    width: 11px;
+    height: 11px;
+}
+
+.profile-edit-fields,
+.profile-edit-map{
+    float: left;
+}
+
+.profile-edit-fields{
+    width: 43%;
+    padding-top: 51px;
+    padding-left: 15px;
+
+    .profile-label{
+        float: left;
+        width: 30%;
+        margin: 6px 0 0 0;
+    }
+
+    .profile-content{
+        float: left;
+        width: 70%;
+        margin-bottom: 10px;
+    }
+}
+
+.profile-edit-map{
+    width: 57%;
+    padding-left: 22px;
+    padding-right: 16px;
+}
+
+#map_canvas {
+    width: 100%;
+    height: 350px;
+    margin: 11px auto 10px;
+    border: 1px solid #ccc;
+}
+
+#profile-save{
+    .icon{
+        background-position: -763px 0;
+        width: 17px;
+        height: 17px;
+    }
+}
+
+button#change-profile-image {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    border: none;
+    height: 75px;
+    width: 100%;
+
+    .icon{
+        display: block;
+        background: url("../images/sprite.png");
+        background-position: -780px 0;
+        width: 30px;
+        height: 24px;
+        margin: 0 auto;
+    }
+}
+
+.form-control .caret{
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    margin-top: -2px;
+    vertical-align: middle;
+}
+
+#search-block {
+    position: relative;
+
+    a {
+    display: block;
+    width: 18px;
+    height: 18px;
+    background: url("/images/sprite.png");
+    background-position: -585px 0;
+    position: absolute;
+    top: 11px;
+    right: 11px;
+    z-index: 9;
+  }
+}

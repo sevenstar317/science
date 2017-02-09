@@ -1,0 +1,58 @@
+extends layout
+
+block contentHead
+	link( href="/css/fileinput.min.css", rel="stylesheet", media="screen" )
+	script( type="text/javascript" src="/js/fileinput.min.js" )
+	script( type="text/javascript" src="/js/validator.min.js" )
+	script( type="text/javascript" src="/js/admin-syllabus.js" )
+
+block content
+	form
+		div.content-header.inline-block.full-width
+			- if (syllabus.id == '')
+				h3.pull-left New Syllabus
+			- else
+				h3.pull-left Edit Syllabus
+			- endif
+			button.btn.btn-default.pull-right( type="button" onclick="save()" ) Save
+			- if (syllabus.id != '')
+				button.btn.btn-default.pull-right.margin-right-10( type="button" onclick="deleteSyllabus()" ) Delete
+			a.btn.btn-default.btn-back.pull-right( href="/admin/syllabuses" ) < Back
+		div#alert-block
+		div.content-body
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Title
+				input.form-control.edit-field( type="text" name="title" value="#{syllabus.title}" required)
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Description
+				textarea.form-control.edit-field( type="text" name="description" required)
+				p#pretext.hidden #{syllabus.description}
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Enable
+				- if (syllabus.enabled == 'true')
+					input#enable( type="checkbox" name="enable" checked )
+				- else
+					input#enable( type="checkbox" name="enable" )
+				- endif
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Order
+				select#order.form-control( name="order" required)
+					option( value="1" ) First
+					- if (syllabuses)
+						option( value="#{syllabuses.length + 1}" ) Last
+						- each item in syllabuses
+							- if (syllabus.order == item.order + 1)
+								option( value="#{item.order + 1}" selected ) After #{item.title}
+							- else
+								option( value="#{item.order + 1}" ) After #{item.title}
+							- endif
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			sapn.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+
+	script.
+		var syllabus_id = '#{syllabus.id}';	
+
+

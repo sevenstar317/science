@@ -1,0 +1,41 @@
+extends layout
+
+block contentHead
+	link( href="/css/datepicker.css", rel="stylesheet", media="screen" )
+	script( type="text/javascript" src="/js/bootstrap-datepicker.js" )
+	script( type="text/javascript" src="/js/admin-reports.js" )
+
+block content
+	div.row
+		div.col-xs-12.col-sm-6
+			h3 Summary
+			div
+				p.report-item-title.pull-left Total Reported Users:
+				p #{reports.total_users}
+			div
+				p.report-item-title.pull-left Multi Reported Users:
+				p #{reports.multi_users}
+			div
+				p.report-item-title.pull-left Reported Users in Last 7 days:
+				p #{reports.last_7_days_users}
+
+		div.col-xs-12.col-sm-6
+			h3 Download
+			div#alert-block
+			div.margin-bottom-20
+				p Reported Date:
+				div.date-filter.first.input-group.date.pull-left( data-date-format="yyyy-mm-dd" )
+					input#reported_begin.form-control( type="text" placeholder="Begin" )
+					span.input-group-addon
+						i.glyphicon.glyphicon-calendar
+				div.date-filter.input-group.date( data-date-format="yyyy-mm-dd" )
+					input#reported_end.form-control( type="text" placeholder="End" )
+					span.input-group-addon
+						i.glyphicon.glyphicon-calendar
+
+			button.btn.btn-default( type="button" onclick="download()" ) Download
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			sapn.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...

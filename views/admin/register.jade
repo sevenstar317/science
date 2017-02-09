@@ -1,0 +1,28 @@
+extends layout
+
+block contentHead
+	script( type="text/javascript" src="/js/validator.min.js" )
+	script( type="text/javascript" src="/js/admin-register.js" )
+
+block content
+	form.form-350( enctype="multipart/form-data" )
+		h2.form-header.text-muted Register Administrator
+		div#alert-block
+
+		div.form-group
+			input#name.form-control( type="text" placeholder="Admin Name" name="name" pattern="(.)*[^ ](.)*" autofocus required )
+		div.form-group
+			input#password.form-control( type="password" placeholder="Password (at least 6 chars)" name="password" pattern="[^ ]+" data-minlength="6" data-error="Password should have minimum length of 6 chars." required )
+			div.help-block.with-errors
+		div.form-group
+			input#confirm-password.form-control( type="password" placeholder="Confirm Password" name="confirm-password" pattern="[^ ]+" data-match="#password" data-match-error="Passwords not match." required )
+			div.help-block.with-errors
+
+		div.signin-btnset.center
+			a.btn.btn-lg.btn-primary( href="#" onclick="registerAdmin()" ) Register
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			sapn.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+

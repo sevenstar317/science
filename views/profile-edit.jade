@@ -1,0 +1,190 @@
+extends layout
+
+block contentHead
+	//link( href="/css/fileinput.min.css", rel="stylesheet", media="screen" )
+	link( href="/css/bootstrap-select.min.css", rel="stylesheet", media="screen" )
+	link( href="/css/jquery-ui.min.css", rel="stylesheet", media="screen" )
+	//script( src="/js/fileinput.min.js" )
+	script( type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false" )
+	script( type="text/javascript" src="/js/google-map.js" )
+	script( type="text/javascript" src="/js/validator.min.js" )
+	script( type="text/javascript" src="/js/bootstrap-select.min.js" )
+	script( type="text/javascript" src="/js/jquery-ui.min.js" )
+	script( type="text/javascript" src="/js/profile-edit.js" )
+
+block content
+	div.top-nav.container-fluid
+		div.row
+			nav
+				ul
+					li.nav-item
+						a(href="/")
+							i.nav-item-icon.nav-item-icon-home
+							span Home
+					li.nav-item
+						a(href="/myclass")
+							i.nav-item-icon.nav-item-icon-class
+							span My Class
+					li.nav-item
+						a(href="/lessons")
+							i.nav-item-icon.nav-item-icon-lessons
+							span Lessons
+					li.nav-item
+						a(href="/tests")
+							i.nav-item-icon.nav-item-icon-tests
+							span Tests
+
+	div.content-wrapper.container-fluid
+		div.row
+			div.sidebar-block
+				nav
+					ul
+						li.nav-item
+							a.active(href="/profile/view")
+								i.nav-item-icon.nav-item-icon-home
+								span Profile
+						li.nav-item
+							a(href="/myclass")
+								i.nav-item-icon.nav-item-icon-class
+								span My Class
+						li.nav-item
+							a(href="/lessons")
+								i.nav-item-icon.nav-item-icon-lessons
+								span Lessons
+						li.nav-item
+							a(href="/tests")
+								i.nav-item-icon.nav-item-icon-tests
+								span Tests
+						li.nav-item
+							a(href="/signout")
+								i.nav-item-icon.nav-item-icon-logout
+								span Log Out
+
+			div.content-block
+				div.page-content.container-fluid
+					div.profile
+						div.profile-cover
+							button#profile-save.profile-cover-btn.btn.btn-orange( onclick="saveProfile()")
+								i.icon
+								| Save Changes
+
+							div.profile-photo
+								div.profile-photo
+								- if (profile.photo == '')
+									img( src="/images/guest.png" )
+								- else
+									img( src="#{profile.photo}" )
+								- endif
+									button#change-profile-image
+										i.icon
+										| Change Photo
+
+						
+						div.profile-edit
+							form.clearfix
+								div#alert-block
+								div.clearfix.profile-edit-fields
+									p.profile-label Name
+									div.profile-content
+										input#name.form-control( type="text" placeholder="Your Name" name="name" value="#{profile.name}" pattern="(.)*[^ ](.)*" autofocus required)
+
+									p.profile-label School
+									div.profile-content
+										div#search-block
+											input#search.form-control.form-search.lens-form-control( type="text" placeholder="Search by Name or Address" name="search"
+											value="#{profile.school_name}")
+											a( href="#" onclick="filterSchools()" )
+
+									p.profile-label Section/Room
+									div.profile-content
+										input#section.form-control( type="text" placeholder="Section / Room" name="section" value="#{profile.section}"  pattern="(.)*[^ ](.)*" required )
+
+									p.profile-label Syllabus
+									div.profile-content
+										select#syllabus.form-control(name="syllabus")
+											- syllabuses.forEach(function(syllabus){
+												- if (syllabus.id == profile.syllabus)
+													option(value="#{syllabus.id}" selected) #{syllabus.title}
+												- else
+													option(value="#{syllabus.id}") #{syllabus.title}
+											- })
+									p.profile-label Grade
+									div.profile-content
+										select#grade.form-control(name="grade")
+											- grades.forEach(function(grade){
+												- if (grade.id == profile.grade)
+													option(value="#{grade.id}" selected) #{grade.grade}
+												- else
+													option(value="#{grade.id}") #{grade.grade}
+											- })
+									p.profile-label Password
+									div.profile-content
+										input.form-control(type="password" name="password" id="password")
+								div.clearfix.profile-edit-map
+									
+									div.inline-block.full-width
+										button.btn.btn-default.btn-list( type="button" onclick="showSchoolList()" title="List" )
+											i.icon
+											| Nearby Schools
+										button.btn.btn-map( type="button" onclick="showMap()" title="Map" )
+											i.icon
+											| Find on Map
+										button.btn.btn-default.btn-add-manually( type="button" onclick="showAddManual()" )
+											i.icon
+											| Add Manually
+										
+										
+
+									ul.list-group.list-school(style="display: none;")
+										li.list-group-item.list-school-item.school-loading.center
+											p.wait-mark
+												span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+												| &nbsp;&nbsp;Loading...
+									div#map_canvas
+									div.add-manual(style="display: none;")
+										div.form-group
+											input#school-name.form-control( type="text" placeholder="School Name" name="school-name" value="#{profile.school_name}"  pattern="(.)*[^ ](.)*" required )
+										div.form-group
+											input#school-addr.form-control( type="text" placeholder="Address" name="school-addr" value="#{profile.school_addr}"  pattern="(.)*[^ ](.)*" )
+										div.form-group
+											input#school-city.form-control( type="text" placeholder="City" name="school-city" value="#{profile.school_city}"  pattern="(.)*[^ ](.)*" )
+										div.form-group
+											input#school-postalcode.form-control( type="text" placeholder="Postal Code" name="school-postalcode" value="#{profile.school_postalcode}" pattern="(.)*[^ ](.)*" data-error="Postal code should be number." )
+											div.help-block.with-errors
+										select#school-country.selectpicker( name="school-country" data-selected="#{profile.school_country}" )
+
+									input#photo( type="file" multiple=false accept="image/*" style="visibility:hidden;")
+									canvas#photo-canvas( width="160" height="160" style="position:absolute;visibility:hidden;" )
+									input#photo-removed( type="hidden" name="photo-removed" )
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+
+block contentScript
+	- if (user && user.school_name)
+		script.
+			var user = {
+				'name': '#{user.name}',
+				'school_name': '#{user.school_name}',
+				'grade_name': '#{lesson.grade_name}',
+				'section_name': '#{user.section}'
+			};
+	- endif
+	script
+		| var imgFile = null;
+		| $('#photo').on('change', function() {
+		| 	$('#photo-removed').val('');
+		| 	setTimeout(
+		| 		function() {
+		| 			loadImage();
+		| 		},
+		| 		100
+		|	);
+		| });
+		| 
+		| 
+		| 
+		- if (profile.photo == '')
+			$("#photo").fileinput('clear');

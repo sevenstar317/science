@@ -1,0 +1,82 @@
+extends layout
+
+block contentHead
+	link( href="/css/offcanvas.css", rel="stylesheet", media="screen" )
+	script( type="text/javascript" src="/js/offcanvas.js" )
+	script( type="text/javascript" src="/js/classmate.js" )
+
+block content
+	h2.text-muted Profile
+	div.classmate-profile
+		img.user-photo( src="#{classmate.photo}" )
+		div.second-info
+			p.school-name #{classmate.school_name}
+			p.grade Grade #{classmate.grade} Section #{classmate.section}
+			p.email #{classmate.email}
+			p.name #{classmate.name}
+			p.update-label.pull-left Receive Updates
+			div.on-off-btnset
+				- if (classmate.receive_update == 'true')
+					button.btn.btn-success( type="button" onclick="updateOnOff(0)" ) ON
+					button.btn.btn-default( type="button" onclick="updateOnOff(1)" style="display:none" ) OFF
+				- else
+					button.btn.btn-success( type="button" onclick="updateOnOff(0)" style="display:none" ) ON
+					button.btn.btn-default( type="button" onclick="updateOnOff(1)" ) OFF
+				- endif
+			div.margin-top-10
+				a#report-user( href="#" onclick="showReportOption(true)" ) Report
+				div#report-options.hidden
+					label( onclick="selectReportOption('Not in Class')" )
+						input#report-not-in-class( type="radio" name="option" )
+						| Not in Class
+					label( onclick="selectReportOption('Other')" )
+						input#report-other( type="radio" name="option" )
+						| Other
+					textarea.form-control
+					div.btn-toolbar.margin-top-10
+						button.btn.btn-success( type="button" onclick="reportUser()" ) Submit
+						button.btn.btn-default( type="button" onclick="showReportOption(false)" ) Cancel
+
+	div.classmate-contents
+		div.row.row-offcanvas.row-offcanvas-left
+			div.col-xs-12.col-sm-3.sidebar-offcanvas#chapterbar( role="navigation" )
+				div#chapters.list-group
+					-if (chapters)
+						- chapters.forEach(function(chapter){
+							a.list-group-item( href="/classmate?chapter=#{chapter.id}" id="chapter-#{chapter.id}" data-chapter-id="#{chapter.id}" ) #{chapter.title}
+						- })
+			div.col-xs-12.col-sm-9
+				div.visible-xs
+					button.btn.btn-primary.btn-xs( type="button", data-toggle="offcanvas" ) Chapters
+				div.content-repository
+					ul.nav.nav-tabs
+						li.active
+							a( href="#content-videos", data-toggle="tab" ) Videos
+						li
+							a( href="#content-notes", data-toggle="tab" ) Class Discussions
+						li
+							a( href="#content-references", data-toggle="tab" ) References
+					div.tab-content
+						div#content-videos.tab-pane.fade.in.active
+						div#content-notes.tab-pane.fade.in
+						div#content-references.tab-pane.fade.in
+	
+	div.modal.fade#video-modal( tabindex="-1" role="dialog" aria-labelledby="Video" aria-hidden="true" )
+		div.modal-dialog
+			div.modal-content
+				div.modal-header
+					button.close( type="button" data-dismiss="modal" aria-hidden="true" ) &times;
+				div.modal-body
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+
+	div#alert-modal.hidden
+
+block contentScript
+	script.
+		var classmate_id = '#{classmate.id}';
+		var chapter_id = '#{selected_chapter}';
+

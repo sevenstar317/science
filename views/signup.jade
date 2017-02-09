@@ -1,0 +1,212 @@
+extends layout
+
+block contentHead
+	link( href="/css/fileinput.min.css", rel="stylesheet", media="screen" )
+	link( href="/css/bootstrap-select.min.css", rel="stylesheet", media="screen" )
+	link( href="/css/jquery-ui.min.css", rel="stylesheet", media="screen" )
+	script( type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false" )
+	script( type="text/javascript" src="/js/google-map.js" )
+	//script( type="text/javascript" src="/js/fileinput.min.js" )
+	script( type="text/javascript" src="/js/validator.min.js" )
+	script( type="text/javascript" src="/js/bootstrap-select.min.js" )
+	script( type="text/javascript" src="/js/jquery-ui.min.js" )
+	script( type="text/javascript" src="/js/signup.js" )
+
+block content
+	div.top-nav.container-fluid
+		div.row
+			nav
+				ul
+					li.nav-item
+						a(href="/")
+							i.nav-item-icon.nav-item-icon-home
+							span Home
+					li.nav-item
+						a(href="/myclass")
+							i.nav-item-icon.nav-item-icon-class
+							span My Class
+					li.nav-item
+						a(href="/lessons")
+							i.nav-item-icon.nav-item-icon-lessons
+							span Lessons
+					li.nav-item
+						a(href="/tests")
+							i.nav-item-icon.nav-item-icon-tests
+							span Tests
+	div.content-wrapper.container-fluid.home-background
+		div.row
+			img(class="logo-big img-responsive" src="/images/logo-big.png", alt="")
+			form.form-350.registration-form( enctype="multipart/form-data" data-toggle="validator" role="form" )
+				
+				- var social = social_user
+				#social
+				h2.form-header
+					span Sign Up
+				
+
+				div.form-content
+					div#signup-step-1.form-350
+						p.registration-title.text-center Registration
+						div.form-group
+							if social.displayName
+								input#name.form-control( type="text" placeholder="Name" name="name" pattern="(.)*[^ ](.)*" value="#{social.displayName}" social_auth="social" disabled required)
+								
+							else
+								input#name.form-control( type="text" placeholder="Name" name="name" pattern="(.)*[^ ](.)*"  required)
+							
+						div.form-group
+							if social.email
+								input#email.form-control( type="email" placeholder="Email" name="email" data-error="Email address is invalid." value= "#{social.email}" disabled required)
+								div.help-block.with-errors
+							else
+								input#email.form-control( type="email" placeholder="Email" name="email" data-error="Email address is invalid." required)
+								div.help-block.with-errors
+						
+						div.form-group 
+							if (social_user == '')
+								input#password.form-control( type="password" placeholder="Password (at least 6 chars)" name="password" pattern="[^ ]+" data-minlength="6" data-error="Password should have minimum length of 6 chars." required )
+								div.help-block.with-errors
+							else
+								input#password.form-control( type="password" placeholder="Password (at least 6 chars)" name="password" pattern="[^ ]+" data-minlength="6" data-error="Password should have minimum length of 6 chars."   value= "#{social_user.id}" style="display:none" )
+								div.help-block.with-errors
+							
+						div.form-group
+							if (social_user == '')
+								input#confirm-password.form-control( type="password" placeholder="Confirm Password" name="confirm-password" pattern="[^ ]+" data-match="#password" data-match-error="Passwords not match." required )
+								div.help-block.with-errors
+							else
+								input#confirm-password.form-control( type="password" placeholder="Confirm Password" name="confirm-password" pattern="[^ ]+" data-match="#password" data-match-error="Passwords not match."  value= "#{social_user.id}"  style="display:none" )
+								div.help-block.with-errors
+							
+							div.form-group
+							if (social_user == '')
+								input#social-id.form-control( type="text"  name="social-id" value= "" style="display:none" )
+								input#registration-type.form-control( type="text"  name="registration-type" value = "" style="display:none" )
+								
+							else
+								input#social-id.form-control( type="text" name="social-id" value= "#{social_user.id}"  style="display:none" )
+								input#registration-type.form-control( type="text" name="registration-type" value= "#{social_user.type}"  style="display:none" )
+						
+
+					div#signup-step-2-1.hidden
+						div.form-350
+							p.registration-title.text-center Your School
+							input#search.form-control.form-search( type="text" placeholder="Search by Name or Address" autofocus autocomplete="on" )
+							div.btn-options.clearfix
+								div.btn-option
+									button.btn-lg.btn.btn-map( type="button" onclick="showMap()" title="Map" )
+										i.icon
+										| Find on Map
+								div.btn-option
+									button.btn.btn-lg.btn-default.btn-add-manually( type="button" onclick="showAddManual()" )
+										i.icon
+										| Add Manually		
+									button.btn.btn-lg.btn-default.btn-list.pull-right( type="button" onclick="showSchoolList()" title="List" )
+										span.glyphicon.glyphicon-align-justify
+							ul.list-group.list-school
+								li.list-group-item.list-school-item.school-loading.center
+									p.wait-mark
+										span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+										| &nbsp;&nbsp;Loading...
+						
+
+					div#signup-step-2-2.form-350.hidden
+						p.registration-title.text-center Your School
+						div.form-group
+							input#school-name.form-control( type="text" placeholder="School Name" name="school-name" pattern="(.)*[^ ](.)*" required )
+						div.form-group
+							input#school-addr.form-control( type="text" placeholder="Address" pattern="(.)*[^ ](.)*" name="school-addr" )
+						div.form-group
+							input#school-city.form-control( type="text" placeholder="City" pattern="(.)*[^ ](.)*" name="school-city" )
+						div.form-group
+							input#school-postalcode.form-control( type="text" placeholder="Postal Code" name="school-postalcode" pattern="(.)*[^ ](.)*" )
+							div.help-block.with-errors
+						select#school-country.selectpicker.form-control( name="school-country" )
+			
+					div#signup-step-3.form-350.hidden
+						p.registration-title.text-center Your Class
+						div.form-group.dropdown
+							button.form-control.dropdown-toggle.form-control( type="button" data-toggle="dropdown" )
+								span.selected-item Syllabus
+								span.caret
+							ul.dropdown-menu( role="menu" )
+								- syllabuses.forEach(function(syllabus){
+									li( role="presentation" )
+										a( role="menuitem" tabindex="-1" onclick="selectDropdownItem(this, '#{syllabus.id}')" ) #{syllabus.title}
+								- })
+							input#syllabus.hidden( type="text" name="syllabus" required)
+						div.form-group.dropdown
+							button.form-control.dropdown-toggle.form-control( type="button" data-toggle="dropdown" )
+								span.selected-item Grade
+								span.caret
+							ul.dropdown-menu( role="menu" )
+								- grades.forEach(function(grade){
+									li( role="presentation" )
+										a( role="menuitem" tabindex="-1" onclick="selectDropdownItem(this, '#{grade.id}')" ) #{grade.grade}
+								- })
+							input#grade.hidden( type="text" name="grade" required)
+						div.form-group
+							input#section.form-control( type="text" placeholder="Section / Room" name="section" pattern="(.)*[^ ](.)*" required )
+
+					div#signup-step-4.form-350.hidden
+						p.registration-title.text-center Add Picture
+						img.registration-photo( src="/images/guest.png" )
+						p.registration-photo-size 160x160
+						div.btn-options.clearfix
+							div.btn-option.btn-option-70
+								input#registration-file-name.form-control(type="text" placeholder="File name")
+							div.btn-option.btn-option-30
+								button#change-registration-image.btn.btn-default.btn-browse(type="button") Browse
+
+						input#photo.hidden( type="file" multiple=false accept="image/*" style="visibility:hidden;" )
+						canvas#photo-canvas( width="160" height="160" style="position:absolute;visibility:hidden;" )
+						if social.photos
+							textarea.social-image#social-image(style="display:none") #{social.photos}		
+
+					div#welcome.hidden
+						p.registration-title.text-center Success
+						p.registration-success Thank you for your registration.
+						p.registration-success You will receive the email with the details for your authentification.
+						//<a href="#" onclick="resendActivationEmail()">resending</a>
+
+					div#welcome2.hidden
+						div.margin-top-50
+							div.col-sm-4.show-sm
+								img.pull-right( src="/images/success.png" style="width:60px;margin-top:7px" )
+							div.col-sm-8.align-center-sm
+								h2 Your account is activated!
+					div#alert-block
+					div#signup-btnset.btn-options.clearfix
+						div.btn-option.btn-option-40
+							button.btn.btn-lg.btn-primary.btn-prev.pull-left( type="button" data-cur-step="1" onclick="prevStep()" ) &lt; Prev
+						div.btn-option.btn-option-20
+							p#signup-title 1/4
+						div.btn-option.btn-option-40
+							button.btn.btn-lg.btn-primary.btn-next.pull-right( type="button" data-cur-step="1" onclick="nextStep()" ) Next &gt;
+							button.btn.btn-lg.btn-primary.btn-submit.pull-right( type="button" onclick="signup();_gaq.push(['_trackEvent', 'Lesson', Concept]);") Submit
+				
+			div.btn-options.clearfix
+				div.btn-option
+				div.btn-option
+					a.link-sign-in( href="/signin" ) Sign In here
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+
+	div.modal.fade#map-modal( tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true" )
+		div.modal-dialog
+			div.modal-content
+				div.modal-body
+					div#map_canvas
+
+block contentScript
+	script.
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-68552555-1']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();

@@ -1,0 +1,23 @@
+extends layout
+
+block contentHead
+	script( type="text/javascript" src="/js/admin-export-contents.js" )
+
+block content
+	h3 Export Contents
+
+	div.margin-bottom-20.margin-top-20
+		p.pull-left Grades:
+		select#filter-grades.filter-select( multiple )
+			- if (grades)
+				- each grade in grades
+					option( value="#{grade._id}" ) #{grade.grade}
+
+	button.btn.btn-default( type="button" onclick="exportContents()" ) Export
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			sapn.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+
+	div#alert-modal.hidden

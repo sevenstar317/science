@@ -1,0 +1,389 @@
+extends layout
+
+block contentHead
+	link( href="/css/offcanvas.css", rel="stylesheet", media="screen" )
+	link( href="/css/quill.base.css", rel="stylesheet", media="screen" )
+	link( href="/css/quill.snow.css", rel="stylesheet", media="screen" )
+	script( src="/js/offcanvas.js" )
+	script( src="/js/myclass.js" )
+	script( src="/js/discussions.js" )
+	script( src="/js/social-share.js" )
+	//script(src='https://apis.google.com/js/platform.js', async='', defer='')
+	script(src="https://apis.google.com/js/platform.js", async="", defer="")
+	script(src="http://connect.facebook.net/en_US/all.js")
+	script(src="/js/quill.min.js")
+	//script
+		window.___gcfg = {lang: 'en-US',parsetags: 'onload'};
+
+block content
+	div.top-nav.container-fluid
+		div.row
+			nav
+				ul
+					li.nav-item
+						a(href="/")
+							i.nav-item-icon.nav-item-icon-home
+							span Home
+					li.nav-item
+						a.active(href="/myclass")
+							i.nav-item-icon.nav-item-icon-class
+							span My Class
+					li.nav-item
+						a(href="/lessons")
+							i.nav-item-icon.nav-item-icon-lessons
+							span Lessons
+					li.nav-item
+						a(href="/tests")
+							i.nav-item-icon.nav-item-icon-tests
+							span Tests
+
+	div.content-wrapper.container-fluid
+		div.row
+			div.sidebar-block
+				nav
+					ul
+						li.nav-item
+							a(href="/profile/view")
+								i.nav-item-icon.nav-item-icon-home
+								span Profile
+						li.nav-item
+							a.active(href="/myclass")
+								i.nav-item-icon.nav-item-icon-class
+								span My Class
+						li.nav-item
+							a(href="/lessons")
+								i.nav-item-icon.nav-item-icon-lessons
+								span Lessons
+						li.nav-item
+							a(href="/tests")
+								i.nav-item-icon.nav-item-icon-tests
+								span Tests
+						li.nav-item
+							a(href="/signout")
+								i.nav-item-icon.nav-item-icon-logout
+								span Log Out
+
+			div.content-block
+				div.page-description
+					h1.page-title My Class
+					h2.page-info=user.school_name
+				div.page-content.container-fluid
+					div.content
+						h3.text-center.content-title Class Discussions
+						p.back
+							i.icon
+							a(href="/myclass") Back
+						div.discussion(data-discussion-id=discussion._id.toString())
+							h4.discussion-title=discussion.title
+							div.discussion-content
+								div.discussion-owner
+									- if (discussion.user.photo && (discussion.user.photo !== undefined) && (discussion.user.photo !== 'undefined'))
+										img.discussion-owner-photo(src=discussion.user.photo)
+									- else
+										img.discussion-owner-photo(src="/images/guest.png")
+									p.discussion-owner-name=discussion.user.name
+								p.discussion-meta
+									- if (user.id == discussion.user._id)
+										a.discussion-owner-name(href="/profile/view")=discussion.user.name
+									- else 
+										a.discussion-owner-name(href="#" onclick='viewUserById(\'' + discussion.user._id.toString() + '\')')=discussion.user.name
+									span.discussion-date=fromNow(discussion.date)
+									span.discussion-chapter=discussion.chapter.title
+									a.discussion-responses(href='/discussion/' + discussion._id + '#responses')=discussion.responsesCount + ' replies'
+
+								p.discussion-text=discussion.text
+							div.buttons.discussion-options
+								- if (discussion.votes.length === 0)
+									p.votes-count.hidden='+' + discussion.votes.length
+								-else 
+									p.votes-count='+' + discussion.votes.length
+								a.vote.btn.btn-success(href="#") Upvote
+								- if (user.id != discussion.user._id)
+									a.report.btn.btn-danger(href="#" onclick='viewUserById(\'' + discussion.user._id.toString() + '\')') Report
+								a.reply.btn.btn-info(href="#")='Reply to ' +  discussion.user.name
+							div#responses.responses
+								- if (discussion.responses)
+									each response in discussion.responses
+										div.response(data-response-id=response._id.toString()
+										data-response-owner=response.user._id.toString()
+										data-secondlvl=response.secondLvl.toString())
+											div.response-first
+												div.responce-wrapper.clearfix
+													div.response-owner
+														- if (response.user.photo)
+															img.response-owner-photo(src=response.user.photo)
+														- else
+															img.response-owner-photo(src="/images/guest.png")
+														p.response-owner-name=response.user.name
+													div.text-box
+														p.response-meta
+															span.response-owner-name=response.user.name
+															span.response-date=fromNow(response.date)
+														p.response-text !{response.text}
+												div.response-options
+													- if (response.votes.length === 0)
+														p.votes-count.hidden='+' + response.votes.length
+													-else 
+														p.votes-count='+' + response.votes.length
+													a.vote(href="#") Upvote
+													- if (user.id != response.user._id)
+														a.report(href="#" onclick='viewUserById(\'' + response.user._id.toString() + '\')') Report
+													a.reply(href="#") Reply
+												div(style="clear: both;")
+											div.reply.hidden.response(data-discussion=discussion._id.toString() data-response=response._id.toString() data-secondlvl="true")
+												div.response-decorate
+												div.response-second
+													div.responce-wrapper.clearfix
+														div.response-owner
+															img.response-owner-photo(src=user.photo)
+															p.response-owner-name=user.name
+														div.editor-box
+													div.response-options.clearfix
+														a.reply-save.btn.btn-default.pull-right(style="margin: 10px;")(href="#") Add
+											each responseSecond in response.responses
+												div.response(data-response-id=responseSecond._id.toString()
+												data-response-owner=responseSecond.user._id.toString()
+												data-secondlvl=responseSecond.secondLvl.toString())
+													div.response-decorate
+													div.response-second
+														div.responce-wrapper.clearfix
+															div.response-owner
+																- if (response.user.photo)
+																	img.response-owner-photo(src=responseSecond.user.photo)
+																- else
+																	img.response-owner-photo(src="/images/guest.png")
+																p.response-owner-name=responseSecond.user.name
+															div.text-box
+																p.response-meta
+																	span.response-owner-name=responseSecond.user.name
+																	span.response-date=fromNow(responseSecond.date)
+																p.response-text !{responseSecond.text}
+														div.response-options
+															- if (responseSecond.votes.length === 0)
+																p.votes-count.hidden='+' + responseSecond.votes.length
+															-else 
+																p.votes-count='+' + responseSecond.votes.length	
+															a.vote(href="#") Upvote
+															- if (user.id != responseSecond.user._id)
+																a.report(href="#" onclick='viewUserById(\'' + responseSecond.user._id.toString() + '\')') Report
+
+
+								div#send-response.reply.hidden.response(data-discussion=discussion._id.toString() data-secondlvl="false")
+									div.response-first
+										div.responce-wrapper.clearfix
+											div.response-owner
+												img.response-owner-photo(src=user.photo)
+												p.response-owner-name=user.name
+											div.editor-box
+										div.response-options
+											a#response-save.btn.btn-default.pull-right(style="margin: 10px;" href="#") Add
+
+
+					div.sidebar
+						//div#guest-comment
+							p You have not enrolled in any class.
+							p
+								a(href="/signin") Sign in
+							&nbsp or &nbsp
+							a(href="/signup") Sign up for Free
+						div.sidebar-section
+							h2.title Classmates
+							div#user-classmates.classmates
+								div.classmate-sm-item.center
+									a(href="/searchfriend")
+										img.user-sm-photo(src="/images/add.png" style="margin: 0 auto;")
+										p Add Friend
+								p#none-classmate None of your classmates are here yet.
+							- if (userid)
+								div( align="right" )
+									a#classmates-expand.more-data( onclick="onMoreClassmates()" ) More
+
+						div.sidebar-section
+							h2.title Other Friends
+							div#friend-group.user-group
+								div#user-friends
+								div#socialfriend
+								span#google-share(style="margin-left:650px")
+
+								div( align="right" )
+									a#friends-expand.more-data( onclick="onMoreFriends()" ) More
+
+
+
+			//div.header-column-container
+				div.test-container
+					div.row
+			//div
+				div.column-header.col-sm-4.active
+							p.a#show-concepts( href="#" onclick="renderMyclass('myclass')" style="margin-right:10px" ) My Class
+						div.column-header.col-sm-4.heading-1
+							p.a#show-concepts( href="#" onclick="renderLesson('lessons')" style="margin-right:10px" ) Lessons
+						div.column-header.col-sm-4.heading-1 
+							p.a#show-concepts( href="#" onclick="renderTest('tests')" style="margin-right:10px" ) Tests
+			//div.inner-contener.concepts2
+				div.col-xs-12.col-sm-12
+					div#class-group.user-group
+						h4.body-color Classmates
+						div#guest-comment
+							p You have not enrolled in any class.
+							p
+								a(href="/signin") Sign in
+								&nbsp or &nbsp
+								a(href="/signup") Sign up for Free
+						//div#user-classmates
+							p#class-info School Name: My School <br> 7th Grade, Section C
+							div.classmate-sm-item.center
+								a(href="/searchfriend")
+									img.user-sm-photo(src="/images/add.png" style="margin: 0 auto;")
+									p Add Friend
+							p#none-classmate None of your classmates are here yet.
+						//- if (userid)
+							div( align="right" )
+								a#classmates-expand.more-data( onclick="onMoreClassmates()" ) More
+					//div#friend-group.user-group
+						h4.body-color Other Friends
+						div#user-friends
+						div#socialfriend
+						span#google-share(style="margin-left:650px")							
+				
+						div( align="right" )
+							a#friends-expand.more-data( onclick="onMoreFriends()" ) More
+
+			- if (user)
+				//div.discussions
+					h2.center Class discussion
+					label(for="discussion-chapter") Select chapter
+						select#discussion-chapter.form-control
+							option(value="all") All discussions
+							option(value="general") General Discussion
+							each chapter in chapters
+								option(value=chapter.id)=chapter.title
+
+					div.discussions-options
+						label(for="discussion-search-text")
+							input#discussion-search-text.form-control(type="text" placeholder="Search discussions")
+							a#discussion-search(href="#").btn.btn-default Search
+						br
+						label(for="discussion-sort-by") Sort by
+							select#discussion-sort-by.form-control
+								option(value="recent") Recent
+								option(value="popular") Most popular
+						a#discussion-create(href="#").btn New Topic
+					div#discussions-block
+						table.table
+							- if (resDiscussions)
+								each resDiscussion in resDiscussions
+									tr(data-discussion-id=resDiscussion._id)
+										td
+											a(href='/discussion/'+resDiscussion._id)=resDiscussion.title
+										td
+											a(href="#" onclick='viewUserById(\'' + resDiscussion.user._id.toString() + '\')')=resDiscussion.user.name
+										td='Responses: ' + resDiscussion.responsesCount
+										td='Date: ' + resDiscussion.date
+										td='Chapter: ' + resDiscussion.chapter.title
+							- else
+								p Discussions not found
+
+			- else if (!user)
+				div.guest-note.note-item.full-width.inline-block.margin-top-10
+					div.content( style="margin:5px;" )
+						p.note-content You have note enrolled in any class.
+						p.note-content To join the class discussion,
+							a(href="/signin") Sign in
+					&nbsp or &nbsp
+					a(href="/signup") Sign up for Free
+			include ./richtext.jade
+			div.modal.fade#user-modal( tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true" )
+				div.modal-dialog
+					div.modal-content
+						div.modal-header
+							p.pull-left(style="font-size:18px;margin-top: -10px" ) Profile 
+							button.close( type="button" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;") &times;
+						div.modal-body
+							div.classmate-profile
+								img.user-photo( src="/images/guest.png" )
+								div.second-info
+									p.name UserName
+									p.school-name School Name
+									p.location Location
+									p.grade-section Grade and Section
+									p.email email
+								div.on-off-btnset.pull-right
+									- if ('true' == 'true')
+										button.btn.btn-success( type="button" onclick="updateOnOff(0)" ) ON
+										button.btn.btn-default( type="button" onclick="updateOnOff(1)" style="display:none" ) OFF
+									- else
+										button.btn.btn-success( type="button" onclick="updateOnOff(0)" style="display:none" ) ON
+										button.btn.btn-default( type="button" onclick="updateOnOff(1)" ) OFF
+									- endif
+								p.update-label.pull-right Receive Updates	
+								div.margin-top-10
+									a#report-user( href="#" onclick="showReportOption(true)" ) Report
+									div#report-options.hidden
+										label( onclick="selectReportOption('Not in Class')" )
+											input#report-not-in-class( type="radio" name="option" )
+											| Not in Class
+										label( onclick="selectReportOption('Bad Content')" )
+											input#report-bad-content( type="radio" name="option" )
+											| Bad Content
+										label( onclick="selectReportOption('Other')" )
+											input#report-other( type="radio" name="option" )
+											| Other
+										textarea.form-control
+										div.btn-toolbar.margin-top-10
+											button.btn.btn-success( type="button" onclick="reportUser()" ) Submit
+											button.btn.btn-default( type="button" data-dismiss="modal" ) Cancel		
+			
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+	div#alert-modal.hidden
+	
+	
+				
+block contentScript
+	script.
+		var userid = '#{userid}';
+		var lesson = {
+			'isLesson': '#{lesson.isLesson}',
+			'syllabus_name': '#{lesson.syllabus_name}',
+			'syllabus': '#{lesson.syllabus}',
+			'grade_name': '#{lesson.grade_name}',
+			'grade': '#{lesson.grade}',
+			'chapter': '#{lesson.chapter}',
+			'concept': '#{lesson.concept}'
+		};
+	- if (user && user.school_name)
+		script.
+			var user = {
+				'name': '#{user.name}',
+				'school_name': '#{user.school_name}',
+				'grade_name': '#{lesson.grade_name}',
+				'section_name': '#{user.section}'
+			};
+	- endif
+
+	- if (classmates && classmates.length >= 0)
+		script.
+			classmates = !{JSON.stringify(classmates)};
+	- endif	
+	- if (friends && friends.length >= 0)
+		script.
+			friends = !{JSON.stringify(friends)};
+	- endif	
+	
+	script.
+		FB.init({appId:'664262100315335',cookie:true,status:true,xfbml:true});
+	script.
+		function FBInvite(){FB.ui({method: 'apprequests',title:'Science Is Fun',message: 'Join me in an exciting world where text books come to life, and learning ‘Science is Fun'},function(response) {if (response) {} else {}});}
+	
+	script.
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-68552555-1']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();

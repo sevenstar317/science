@@ -1,0 +1,91 @@
+.header{
+  margin: 0;
+  border: none;
+
+  @include border-radius(0);
+  @include background-image(linear-gradient($header-gradient-start, $header-gradient-end));
+
+  .logo{
+    height: 57px;
+    padding: 3px 0 0 13px;
+    text-indent: -999999px;
+
+    img {
+      width: 160px;
+      height: 57px;
+      display: block;
+    }
+  }
+
+  .menu-user{
+    overflow: hidden;
+    padding: 9px 5px 9px 0;
+
+    &:hover, &:focus{
+      background: transparent !important;
+    }
+
+    &.dropdown-toggle {
+      cursor: pointer;
+    }
+  }
+
+  .user-photo{
+    width: 51px;
+    height: 51px;
+    float: right;
+
+    @include border-radius(50%);
+    @include background-size(cover);
+  }
+
+  .user-info{
+    float: right;
+    font-size: 17px;
+    text-align: right;
+    margin: 0;
+    padding: 8px 15px 0 0;
+
+    .user-name{
+      color: #f68923;
+    }
+
+    .user-school{
+      color: #ffffff;
+    }
+  }
+}
+
+#menu-user {
+  a.btn-signin {
+    background: #f68923;
+    border: none;
+    padding-top: 0;
+    line-height: 40px;
+    margin-top: 15px;
+
+    @include box-shadow(none);
+
+    .icon{
+      vertical-align: middle;
+      background: url("/images/sprite.png");
+      background-position: -849px 0;
+      display: inline-block;
+      margin-right: 5px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .dropdown-menu {
+    border: none;
+
+    a {
+      font-family: 'HelveticaNeueCyr-Light', sans-serif;
+    }
+  }
+}
+
+.nav .open>a, .nav .open>a:hover, .nav .open>a:focus {
+  background-color: transparent;
+}

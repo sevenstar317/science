@@ -1,0 +1,170 @@
+.profile {
+    font-family: 'HelveticaNeueCyr-Light', sans-serif;
+    color: #717171;
+
+    &-cover{
+        background: url('../images/profile-cover.jpg') top center;
+        height: 366px;
+        position: relative;
+        
+
+        @include background-size(cover);
+    }
+
+    #profile-edit{
+        
+        .icon{
+            width: 19px;
+            height: 18px;
+            background-position: -603px 0;
+        }
+    }
+
+    &-photo{
+        border: 7px solid #fff;
+        position: absolute;
+        background: #fff;
+        bottom: 0;
+        left: 52px;
+        bottom: -80px;
+        overflow: hidden;
+
+        @include border-radius(50%);
+
+        img{
+            width: 152px;
+            height: 152px;
+
+            @include border-radius(50%);
+        }
+    }
+
+    &-name{
+        margin-left: 57px;
+        margin-bottom: 25px;
+        margin-top: 80px;
+        font-size: 24px;
+        font-family: 'HelveticaNeueCyr-Medium', sans-serif;
+    }
+
+    &-view{
+        margin-left: 42px;
+        //margin-top: 94px;
+    }
+
+    &-info{
+        margin-bottom: 16px;
+        word-break: break-all;
+
+        .icon{
+            display: inline-block;
+            margin-right: 5px;
+            background: url('/images/sprite.png');
+        }
+
+        &.profile-grade .icon{
+            width: 15px;
+            height: 15px;
+            background-position: -622px 0;
+        }
+
+        &.profile-section .icon{
+            width: 14px;
+            height: 12px;
+            background-position: -637px 0;
+        }
+
+        &.profile-percentage .icon{
+            width: 18px;
+            height: 18px;
+            background-position: -651px 0;
+        }
+
+        &.profile-classmates .icon{
+            width: 25px;
+            height: 15px;
+            background-position: -669px 0;
+        }
+
+        &.profile-email .icon{
+            width: 16px;
+            height: 11px;
+            background-position: -694px 0;
+        }
+
+        &.profile-schoolname .icon{
+            width: 13px;
+            height: 20px;
+            background-position: -710px 0;
+        }
+
+        &.profile-syllabus .icon{
+            width: 20px;
+            height: 15px;
+            background-position: -723px 0;
+        }
+
+        &.profile-add-friends .icon{
+            width: 20px;
+            height: 13px;
+            background-position: -743px 0;
+        }
+    }
+
+    &-percentage-chart{
+        text-align: center;
+
+        P{
+            font-size: 18px;
+
+
+            &:last-child{
+                color: #f47b1c;
+            }
+        }
+
+        .chart{
+            position: relative;
+        }
+
+        .percentage {
+            font-size: 22px;
+            color: #717171;
+            font-family: 'HelveticaNeueCyr-Medium', sans-serif;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+
+            @include transform(translateY(-50%));
+        }
+    }
+}
+
+.chartsvg{
+    display: block;
+
+    .pie{
+        stroke-dasharray: 62.8319, 314.159;
+    }
+}
+
+.profile-cover-btn{
+    position: absolute;
+    bottom: 15px;
+    right: 20px;
+
+    .icon{
+        display: inline-block;
+        background: url('/images/sprite.png');
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+}
+
+.profile-view-col {
+    padding-right: 15px;
+    padding-left: 15px;
+    float: left;
+    width: 33.33333333%;
+}

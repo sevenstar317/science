@@ -1,0 +1,97 @@
+extends layout
+
+block contentHead
+	link( href="/css/fileinput.min.css", rel="stylesheet", media="screen" )
+	script( type="text/javascript" src="/js/fileinput.min.js" )
+	script( type="text/javascript" src="/js/validator.min.js" )
+	script( type="text/javascript" src="/js/admin-chapter.js" )
+
+block content
+	form
+		div.content-header.inline-block.full-width
+			- if (chapter.id == '')
+				h3.pull-left New Chapter
+			- else
+				h3.pull-left Edit Chapter
+			- endif
+			button.btn.btn-default.pull-right( type="button" onclick="save()" ) Save
+			- if (chapter.id != '')
+				button.btn.btn-default.pull-right.margin-right-10( type="button" onclick="deleteChapter()" ) Delete
+			a.btn.btn-default.btn-back.pull-right( href="/admin/chapters" ) < Back
+		div#alert-block
+		div.content-body
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Title
+				input.form-control.edit-field( type="text" name="title" value="#{chapter.title}" required)
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Description
+				textarea.form-control.edit-field( type="text" name="description" required)
+				p#pretext.hidden #{chapter.description}
+			div.edit-field-item
+				p.edit-field-label.pull-left Image
+				div.form-group.inline-block
+					input#image( type="file" name="image" multiple=false accept="image/*" )
+					input#image-removed( type="hidden" name="image-removed" )
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Enable
+				- if (chapter.enabled == 'true')
+					input#enable( type="checkbox" name="enable" checked )
+				- else
+					input#enable( type="checkbox" name="enable" )
+				- endif
+			div
+				p.edit-field-label Links
+				- if (links)
+					- var index = 0
+					- each link in links
+						- index++
+						div.edit-link-block
+							div.pull-left.margin-right-30
+								p.edit-link-label.pull-left Syllabus
+								select.form-control.edit-link-select( id="syllabus_#{index}" index="#{index}" name="syllabuses" onchange="loadGrade(this)" required)
+									- if (syllabuses)
+										- each syllabus in syllabuses
+											- if (link.linkInfo.syllabus + ' ' == syllabus._id + ' ') 
+												option( value="#{syllabus._id}" selected) #{syllabus.title}
+											- else
+												option( value="#{syllabus._id}" ) #{syllabus.title}
+											- endif
+							div.form-group.pull-left.margin-right-30
+								p.edit-link-label.pull-left Grade
+								select.form-control.edit-link-select( id="grade_#{index}" name="grades" onchange="loadOrder($(syllabus_#{index}), this)" required)
+									- if (link.exGrades)
+										- each exGrade in link.exGrades
+											- if (link.linkInfo.grade + ' '== exGrade.grade_id + ' ')
+												option( value="#{exGrade.grade_id}" selected) #{exGrade.grade_title}
+											- else
+												option( value="#{exGrade.grade_id}") #{exGrade.grade_title}
+											- endif
+							div.form-group.pull-left.margin-right-30
+								p.edit-link-label.pull-left Order
+								select.form-control.edit-link-select( id="order_#{index}" name="orders" required)
+									option( value="1" ) First
+										- if (link.exChapters)
+											- each exChapter in link.exChapters
+												- if (link.linkInfo.order == exChapter.order + 1)
+													option( value="#{exChapter.order + 1}" selected) After #{exChapter.chapter_title}
+												- else
+													option( value="#{exChapter.order + 1}") After #{exChapter.chapter_title}
+												- endif
+							button.btn.btn-default.pull-right.glyphicon.glyphicon-minus( type="button" onclick="removeLink(this)" )
+				div.edit-link-block
+					button.btn.btn-default.pull-right.glyphicon.glyphicon-plus( type="button" onclick="addLink(this)" )
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			sapn.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+
+	script.
+		var chapter_id = '#{chapter.id}';
+		var image = '#{chapter.image}';
+
+	- if (syllabuses && syllabuses.length >= 0)
+		script.
+			syllabuses = !{JSON.stringify(syllabuses)};
+	- endif
+

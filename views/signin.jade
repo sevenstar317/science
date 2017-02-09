@@ -1,0 +1,64 @@
+extends layout
+
+block contentHead
+	script( type="text/javascript" src="/js/validator.min.js" )
+	script( type="text/javascript" src="/js/signin.js" )
+
+block content
+	div.top-nav.container-fluid
+		div.row
+			nav
+				ul
+					li.nav-item
+						a(href="/")
+							i.nav-item-icon.nav-item-icon-home
+							span Home
+					li.nav-item
+						a(href="/myclass")
+							i.nav-item-icon.nav-item-icon-class
+							span My Class
+					li.nav-item
+						a(href="/lessons")
+							i.nav-item-icon.nav-item-icon-lessons
+							span Lessons
+					li.nav-item
+						a(href="/tests")
+							i.nav-item-icon.nav-item-icon-tests
+							span Tests
+	div.content-wrapper.container-fluid.home-background
+		div.row
+			img(class="logo-big img-responsive" src="/images/logo-big.png", alt="")
+			form.form-350.signin-form
+				h2.form-header
+					span Sign In
+				div.form-content
+					div.form-group.clearfix
+						a(class="btn btn-fb" href="/auth/facebook")
+							i.icon
+							| Facebook
+						a(class="btn btn-gp" href="/auth/google")
+							i.icon
+							| Google +
+					p.text-center Or
+					div.form-group
+						input#email.form-control( type="email" placeholder="Email" name="email" data-error="Email address is invalid." autofocus required )
+					div.form-group
+						input#password.form-control( type="password" placeholder="Password" name="password" required )
+					div#alert-block
+			div.forgot-pass.clearfix
+				a( href="/forgotPassword" ) Forgot Password?
+			div.btn-options.clearfix
+				button.btn.btn-lg.btn-singin( type="button" onclick="signin()" ) Sign In
+				div.btn-option
+					a.btn.btn-lg.btn-primary( href="/signup" onclick="clearSocialCookie()" ) Sign Up
+					p.blue Register as new user
+				div.btn-option
+					a.btn.btn-lg.btn-cancel( href="/" ) Cancel
+					p.white Continue as Guest
+
+			
+	
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			sapn.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...

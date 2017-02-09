@@ -1,0 +1,164 @@
+extends layout
+
+block contentHead
+	script( type="text/javascript" src="/js/admin-pagenation.js" )
+	script( type="text/javascript" src="/js/admin-search.js" )
+
+block content
+	div.content-header.inline-block.full-width
+		h3.pull-left Search Contents
+		button#search.btn.btn-default.pull-right( type="button" onclick="searchContent('true')" style="margin-left:10px") Search & Download
+		button#search.btn.btn-default.pull-right( type="button" onclick="searchContent('false')" ) Search
+	div.margin-bottom-20.margin-top-20(style="height:70px")
+		div.margin-right-60.pull-left
+			p.pull-left Syllabuses:
+			select#filter-syllabuses.form-control( onchange="onSyllabusFilter()" )
+				option( value ) -Select Syllabus-
+				- if (syllabuses)
+					- each syllabus in syllabuses
+						option( value="#{syllabus._id}" ) #{syllabus.title}
+		div.margin-right-60.pull-left
+			p.pull-left Grades:
+			select#filter-grades.form-control( onchange="onGradeFilter()" )
+				option( value ) -Select Grades-
+		div.margin-right-60.pull-left
+			p.pull-left Chapter:
+			select#chapter-filter.pull-right.form-control( onchange="onChapterFilter()" )
+				option( value ) -Select Chapter-
+		div.margin-right-60.pull-left
+			p Concept:
+			select#concept-filter.pull-right.form-control(  )
+				option( value ) -Select Concept-
+
+	div.margin-bottom-20
+		p.pull-left Content Type:
+		div.filter-verified-status.inline-block
+			label.margin-right-20( onclick="selectContentType('image')" )
+				input#content-type-image( type="radio" name="content_type" checked )
+				| &nbsp;&nbsp;Image
+			label.margin-right-20( onclick="selectContentType('video')" )
+				input#content-type-video( type="radio" name="content_type" )
+				| &nbsp;&nbsp;Video
+			label.margin-right-20( onclick="selectContentType('reference')" )
+				input#content-type-ref( type="radio" name="content_type" )
+				| &nbsp;&nbsp;Reference
+
+	div#show-bar
+		p#show-info.pull-left( style="margin:3px 0 0 0;" )
+		select#count-per-page.pull-right( onchange="changeCountPerPage()" )
+			option( value="10" ) 10
+			option( value="25" selected ) 25
+			option( value="50" ) 50
+			option( value="100" ) 100
+			option( value="-1" ) All
+		p.pull-right( style="margin:3px 5px 0 0;" ) Show:
+
+	div#image-table.content-table
+		table.table.table-hover
+			colgroup
+				col( width="50" )
+				col( width="90" )
+				col( width="150" )
+				col
+				col
+				col
+				col
+			thead
+				tr.headings
+					th
+						span No
+					th
+						span Image
+					th
+						span Credit
+					th
+						span Syllabus
+					th
+						span Grade
+					th
+						span Chapter
+					th
+						span Concept
+			tbody#image-tbody
+				- var totalCount = 0
+				- if (grades)
+					- totalCount = grades.length
+
+	div#video-table.content-table
+		table.table.table-hover
+			colgroup
+				col( width="50" )
+				col( width="100" )
+				col
+				col
+				col
+				col
+			thead
+				tr.headings
+					th
+						span No
+					th
+						span YouTube
+					th
+						span Syllabus
+					th
+						span Grade
+					th
+						span Chapter
+					th
+						span Concept
+			tbody#video-tbody
+				- var totalCount = 0
+
+	div#ref-table.content-table
+		table.table.table-hover
+			colgroup
+				col( width="50" )
+				col( width="200" )
+				col( width="250" )
+				col
+				col
+				col
+				col
+			thead
+				tr.headings
+					th
+						span No
+					th
+						span Title
+					th
+						span URL
+					th
+						span Syllabus
+					th
+						span Grade
+					th
+						span Chapter
+					th
+						span Concept
+			tbody#ref-tbody
+				- var totalCount = 0
+
+	div#page-btnset.btn-group.pull-right.margin-top-20.margin-bottom-10
+			a.btn.btn-default.page-first( href="#" title="First Page" onclick="goToPage('first')" ) First
+			a.btn.btn-default.page-prev( href="#" title="Prev Page" onclick="goToPage('prev')" ) Prev
+			a.btn.btn-default.page-next( href="#" title="Next Page" onclick="goToPage('next')" ) Next
+			a.btn.btn-default.page-last( href="#" title="Last Page" onclick="goToPage('last')" ) Last
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			sapn.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+
+	div#alert-modal.hidden
+
+	div.modal.fade#video-modal( tabindex="-1" role="dialog" aria-labelledby="Video" aria-hidden="true" )
+		div.modal-dialog
+			div.modal-content
+				div.modal-header
+					button.close( type="button" data-dismiss="modal" aria-hidden="true" ) &times;
+				div.modal-body
+
+	script.
+		var totalCount = #{totalCount};
+

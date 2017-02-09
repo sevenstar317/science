@@ -1,0 +1,41 @@
+extends layout
+
+block content
+	div.col-sm-8.profile
+		div.full-width.inline-block
+			h2.text-muted.pull-left My Profile
+			a#profile-edit.btn.btn-default( href="/profile/edit" ) Edit Profile
+		div.profile-view
+			div
+				p.profile-label Name
+				div.profile-content
+					p #{profile.name}
+			div
+				p.profile-label Email
+				div.profile-content
+					p #{profile.email}
+			div
+				p.profile-label School
+				div.profile-content
+					p #{profile.school_name}
+			div
+				p.profile-label Syllabus
+				div.profile-content
+					p #{profile.syllabus}
+			div
+				p.profile-label Grade
+				div.profile-content
+					p #{profile.grade}
+			div
+				p.profile-label Section / Room
+				div.profile-content
+					p #{profile.section}
+			div
+				p.profile-label Photo
+				div.profile-content
+					- if (profile.photo == '')
+						img( src="/images/guest.png" )
+					- else
+						img( src="#{profile.photo}" )
+					- endif
+

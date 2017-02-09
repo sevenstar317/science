@@ -1,0 +1,43 @@
+{
+  "name": "ScienceIsFun",
+  "description": "A study guide app for high schoolers.",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "async": "^1.5.2",
+    "bcrypt": "*",
+    "bcryptjs": "^2.3.0",
+    "csv-parse": "*",
+    "dateformat": "^1.0.12",
+    "express": "3.4.2",
+    "fbgraph": "^1.1.0",
+    "fbgraphapi": "^0.5.0",
+    "fs": "*",
+    "googleapis": "^2.1.7",
+    "htmlparser2": "*",
+    "imagemagick": "*",
+    "jade": "*",
+    "mongodb": "^2.1.16",
+    "mongoose": "~3.6.20",
+    "mongoose-text-search": "0.0.2",
+    "node-gcm-service": "*",
+    "node-random": "*",
+    "nodemailer": "*",
+    "os-utils": "*",
+    "passport": "*",
+    "passport-facebook": "*",
+    "passport-google-oauth": "*",
+    "request": "*",
+    "socket.io": "*",
+    "tracer": "*"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-compass": "^2.1.0",
+    "gulp-sass": "^2.2.0"
+  }
+}

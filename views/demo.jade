@@ -1,0 +1,27 @@
+extends layout
+
+block contentHead
+	link( href="/css/offcanvas.css", rel="stylesheet", media="screen" )
+	script( src="/js/offcanvas.js" )
+	
+
+block content
+	div.margin-top-20
+		img( src="#{userphoto}" )
+		div.username(style="color: #3399FF;") #{username}
+		div
+			span You are part of 'Science is Fun' at 
+			span.schoolname #{schoolname}
+			span ....
+		
+		
+	div.a#show-concepts.btn.btn-primary( href="/afterLogin" onclick="renderLesson()" style="margin-right:10px" ) LESSONS
+	div.a#show-concepts.btn.btn-success( href="#" onclick="showConcepts()" style="margin-right:10px" ) TESTS
+	div.a#show-concepts.btn.btn-danger( href="#" onclick="showConcepts()" style="margin-right:10px" ) MY CLASS
+			
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+	div#alert-modal.hidden
+				

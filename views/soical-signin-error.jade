@@ -1,0 +1,37 @@
+extends layout
+
+block contentHead
+	script( type="text/javascript" src="/js/validator.min.js" )
+	script( type="text/javascript" src="/js/signin.js" )
+
+block content
+	form.form-350
+		h2.form-header.text-muted Sign In
+		div#alert-block
+			div.alert.alert-danger.alert-dismissable
+				button.close(type="button" data-dismiss="alert" aria-hidden="true")
+				strong Error!
+					p Sorry. Your account was suspended.
+		
+		div.form-group
+			a(href="/auth/facebook")
+				img(src="/social_buttons/fb_btn.png" width="auto" height="35")
+			a(href="/auth/google")
+				img(src="/social_buttons/googlelogin.png" width="auto" height="35")
+		
+		div.form-group
+			input#email.form-control( type="email" placeholder="Email" name="email" data-error="Email address is invalid." autofocus required )
+		div.form-group
+			input#password.form-control( type="password" placeholder="Password" name="password" required )
+
+		div.signin-btnset
+			button.btn.btn-lg.btn-primary.pull-left( type="button" onclick="signin()" ) Sign In
+			a.btn.btn-lg.btn-primary.btn-cancel( href="/signup" onclick="clearSocialCookie()" ) Sign Up
+
+		div.forgot-pass
+			a( href="/forgotPassword" ) Forgot Password?
+	
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			sapn.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...

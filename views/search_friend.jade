@@ -1,0 +1,133 @@
+extends layout
+
+block contentHead
+	link( href="/css/offcanvas.css", rel="stylesheet", media="screen" )
+	script( src="/js/offcanvas.js" )
+	script( src="/js/search_friend.js" )
+
+block content
+	div.top-nav.container-fluid
+		div.row
+			nav
+				ul
+					li.nav-item
+						a(href="/")
+							i.nav-item-icon.nav-item-icon-home
+							span Home
+					li.nav-item
+						a.active(href="/myclass")
+							i.nav-item-icon.nav-item-icon-class
+							span My Class
+					li.nav-item
+						a(href="/lessons")
+							i.nav-item-icon.nav-item-icon-lessons
+							span Lessons
+					li.nav-item
+						a(href="/tests")
+							i.nav-item-icon.nav-item-icon-tests
+							span Tests
+
+	div.content-wrapper.container-fluid
+		div.row
+			div.sidebar-block
+				nav
+					ul
+						li.nav-item
+							a(href="/profile/view")
+								i.nav-item-icon.nav-item-icon-home
+								span Profile
+						li.nav-item
+							a.active(href="/myclass")
+								i.nav-item-icon.nav-item-icon-class
+								span My Class
+						li.nav-item
+							a(href="/lessons")
+								i.nav-item-icon.nav-item-icon-lessons
+								span Lessons
+						li.nav-item
+							a(href="/tests")
+								i.nav-item-icon.nav-item-icon-tests
+								span Tests
+						li.nav-item
+							a(href="/signout")
+								i.nav-item-icon.nav-item-icon-logout
+								span Log Out
+
+			div.content-block
+				div.page-description
+					h1.page-title My Class
+					- if (user)
+						h2.page-info=user.school_name
+					- else
+						h2.page-info
+				div.page-content.container-fluid
+					div.content-friends
+						h3.text-center.content-title Classmates
+						p.back
+							i.icon
+							a(href="/myclass") Back
+						div.video-search
+							label(for="search-input")
+								input#search-input.form-control.form-search.lens-form-control( type="text" placeholder="Search by Name or Email" name="search" )
+								a( href="#" onclick="searchFriend()" )
+						div.margin-top-30
+							div#searched-friend
+								div.search-video-block.hidden
+									div.classmate-item.center.margin-right-30
+										div#tick-aaa.mark-tick
+											img( src="/images/icon-tick.png" )
+										a( href="#" )
+											img.user-photo( src="/images/logo2.png" )
+											p Test User
+									div.search-video-info
+										div.mark-add
+											a( href="#" )
+												img( src="/images/add-video-r.png" )
+										p.video-title title
+										p author
+										p description
+										p counts
+						div#not-found.margin-top-30.hidden
+							h4.text-muted No Search result
+							p.margin-left-50 Did not find anyone. Try again. Search by email if you have your friends's email id.
+						div#not-found-email.margin-top-30.hidden
+							h4.text-muted No Search result for email - Inviting users
+							b
+								p#txt-email test@mail.com
+							p.inline-block.margin-left-10 is not enrolled.
+							a#invite-block( href="#" onclick="invite()" )
+								img.inline-block( src="/images/share.png" )
+								p.inline-block INVITE
+							div#tick-invite.inline-block
+								img.inline-block( src="/images/icon-tick.png" )
+								p.inline-block An email invitation is sent.
+
+						div.col-xs-12.col-sm-3
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+	div#alert-modal.hidden
+
+	script.
+		var userid = '#{userid}';
+		var lesson = {
+			'isLesson': '#{lesson.isLesson}',
+			'syllabus_name': '#{lesson.syllabus_name}',
+			'syllabus': '#{lesson.syllabus}',
+			'grade_name': '#{lesson.grade_name}',
+			'grade': '#{lesson.grade}',
+			'chapter': '#{lesson.chapter}',
+			'concept': '#{lesson.concept}'
+		};
+	- if (user && user.school_name)
+		script.
+			var user = {
+				'name': '#{user.name}',
+				'school_name': '#{user.school_name}',
+				'grade_name': '#{lesson.grade_name}',
+				'section_name': '#{user.section}'
+			};
+	- endif
+

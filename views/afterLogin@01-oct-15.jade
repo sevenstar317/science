@@ -1,0 +1,77 @@
+extends layout
+
+block contentHead
+	link( href="/css/offcanvas.css", rel="stylesheet", media="screen" )
+	script( src="/js/offcanvas.js" )
+	script( src="/js/afterLogin.js" )
+	script( src="/js/social-share.js" )
+	//script(src="https://apis.google.com/js/platform.js" async defer / )
+	script(src='https://apis.google.com/js/platform.js', async='', defer='')
+	
+	
+block content 
+	div.margin-top-20.col-center
+		div.user-info
+			img(style="heigth:100px;width:100px;border-radius:20px;")#user-profile-image( src="#{userphoto}")
+			div.profile-name #{username}
+			div#percentile
+				span#user-percentile You are the part of 'Science is Fun at ' 
+				span.schoolname #{schoolname} 
+				p.user-percentage
+				
+				span#caption 
+				input#gradename( type="hidden" name="gradename" value="#{gradename}" )
+				input#syllabusname( type="hidden" name="question" value="#{syllabusname}" )
+				input#userid( type="hidden" name="question" value="#{userid}" )
+				input#userschool( type="hidden" value="#{schoolname}" )
+				//input#logintype( type="hidden" value="#{logintype}" )
+				
+	div#fb-root
+		a.fb_share(href="http://scienceisfun.mobiloitte.org:3000" data-title="User Percenage and Percentile" data-desc="Some description for this article" style="margin-left:610px;")
+			img(src="/social_buttons/fb-share-button1.jpg" width="15%" height="50%" )
+		span#google-share
+				g:plus(action="share")
+		
+	
+	div.h-action
+		div.ac-btn
+			a#show-concepts.btn.btn-primary( href="#" onclick="renderLesson('lessons')" style="margin-right:10px" ) LESSONS
+			
+		div.ac-btn
+			a#show-concepts.btn.btn-success( href="#" onclick="renderTest('tests')" style="margin-right:10px" ) TESTS
+		div.ac-btn
+			a#show-concepts.btn.btn-warning( href="#" onclick="renderMyclass('myclass')" style="margin-right:10px" ) MY CLASS
+	
+	div.clear-both(style="width:auto;height:250px;overflow:auto;border:1px solid black;")
+		h4.body-color Class Discussion
+		div.concept-note.full-width.inline-block
+			- if (!user)
+				div.guest-note.note-item.full-width.inline-block.margin-top-10
+					div.content( style="margin:5px;" )
+						p.note-content You have note enrolled in any class.
+						p.note-content To join the class discussion, 
+							a(href="/signin") Sign in
+							&nbsp or &nbsp
+							a(href="/signup") Sign up for Free
+			- else
+				div.note-add.full-width.inline-block
+					
+					
+				- if (notes)
+					- notes.forEach(function(item, index){
+						div.note-item.full-width.inline-block.margin-top-10( item_id="#{item.id}" onmouseover="onMouseContent(this, true)" onmouseout="onMouseContent(this, false)")
+							div.person.pull-left
+								img( src="#{item.owner_photo}" )
+								p.person-name #{item.owner_name}
+							div.content
+								p.note-item-date.inline-block #{item.date}
+								p.note-content #{item.note}
+							div.pull-right
+								button.btn.btn-default.btn-note-add( type="button" onclick="addNote()" ) Add Note
+					- })
+	
+	- if (notes && notes.length >= 0)
+		script.
+			notes = !{JSON.stringify(notes)};
+	- endif
+

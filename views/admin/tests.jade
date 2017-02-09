@@ -1,0 +1,109 @@
+extends layout
+
+block contentHead
+	script( type="text/javascript" src="/js/admin-pagenation.js" )
+	script( type="text/javascript" src="/js/admin-tests.js" )
+
+block content
+	div.content-header.inline-block.full-width
+		h3.pull-left Manage Tests
+		a.btn.btn-default.pull-right( href="/admin/test/new" ) Add Question
+
+	div#show-bar
+		p#show-info.pull-left( style="margin:3px 0 0 0;" )
+		select#count-per-page.pull-right( onchange="changeCountPerPage()" )
+			option( value="10" ) 10
+			option( value="25" selected ) 25
+			option( value="50" ) 50
+			option( value="100" ) 100
+			option( value="-1" ) All
+		p.pull-right( style="margin:3px 5px 0 0;" ) Show:
+		select#concept-filter.pull-right.show-filter-select( onchange="onConceptFilter()" )
+			option( value="" selected) -Select Concept-
+		p.pull-right( style="margin:3px 5px 0 0;" ) Concept:
+		select#chapter-filter.pull-right.show-filter-select( onchange="onChapterFilter()" )
+			option( value="" selected) -Select Chapter-
+		p.pull-right( style="margin:3px 5px 0 0;" ) Chapter:
+		select#grade-filter.pull-right.show-filter-select( onchange="onGradeFilter()" )( style="max-width:85px" ) 
+			option( value="" selected) -Select Grade-
+		p.pull-right( style="margin:3px 5px 0 0;" ) Grade:
+		select#syllabus-filter.pull-right.show-filter-select( onchange="onSyllabusFilter()" ) 
+			option( value="" selected) -Select Syllabus-
+			- if (syllabuses)
+				- each syllabus in syllabuses
+					option( value="#{syllabus._id}" ) #{syllabus.title}
+		p.pull-right( style="margin:3px 5px 0 0;" ) Syllabus:
+		select#option-filter.pull-right.show-filter-select( onchange="onOptionFilter(this)" )
+			option( value="1" ) All
+			option( value="2" selected) Mapped
+			option( value="3" ) Unmapped
+		p.pull-right( style="margin:3px 5px 0 0;" ) Option:
+	
+	div.content-table
+		table.table.table-hover
+			colgroup
+				col( width="50" )
+				col
+				col
+				col
+				col
+				col( width="60" )
+				col( width="70" )
+				col( width="60" )
+			thead
+				tr.headings
+					th
+						span No
+					th
+						span Question
+					th
+						span Concept
+					th
+						span Chapter
+					th
+						span Syllabus
+					th
+						span Grade
+					th
+						span Status
+					th
+						span Action
+			tbody#test-tbody
+				- var totalCount = 0
+				- if (tests)
+					- totalCount = tests.length
+					- tests.forEach(function(item, index){
+						tr( id="item-#{index + 1}" )
+							td #{index + 1}
+							td #{item.question}
+							td #{item.concept}
+							td #{item.chapter}
+							td #{item.grade}
+							- if (item.enabled == 'false')
+								td.user-enabled Disabled
+							- else
+								td.user-enabled Enabled
+							td 
+								a( href="/admin/test/edit?id=#{item.id}" ) Edit
+					- })
+
+	div#page-btnset.btn-group.pull-right.margin-top-20.margin-bottom-10
+			a.btn.btn-default.page-first( href="#" title="First Page" onclick="goToPage('first')" ) First
+			a.btn.btn-default.page-prev( href="#" title="Prev Page" onclick="goToPage('prev')" ) Prev
+			a.btn.btn-default.page-next( href="#" title="Next Page" onclick="goToPage('next')" ) Next
+			a.btn.btn-default.page-last( href="#" title="Last Page" onclick="goToPage('last')" ) Last
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			sapn.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+
+	div#alert-modal.hidden
+
+	script.
+		var totalCount = #{totalCount};
+
+	- if (syllabuses && syllabuses.length >= 0)
+		script.
+			syllabuses = !{JSON.stringify(syllabuses)};
+	- endif

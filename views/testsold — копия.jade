@@ -1,0 +1,101 @@
+extends layout
+
+block contentHead
+	link( href="/css/offcanvas.css", rel="stylesheet", media="screen" )
+	script( src="/js/offcanvas.js" )
+	script( src="/js/tests.js" )
+
+	
+block content
+	div.pull-right.margin-top-20 
+		a#show-concepts.btn.btn-default.hidden( href="#" onclick="showConcepts()" style="margin-right:10px" ) Back
+		a.btn.btn-default.hidden( href="/contents" ) Contents
+	div.row.row-offcanvas.row-offcanvas-left
+		div.header-column-container
+			div.test-container
+				div.row
+					div.column-header.col-sm-4.heading-1 
+						p.a#show-concepts( href="#" onclick="renderMyclass('myclass')" style="margin-right:10px" ) My Class
+					div.column-header.col-sm-4.heading-1
+						p.a#show-concepts( href="#" onclick="renderLesson('lessons')" style="margin-right:10px" ) Lessons
+					div.column-header.col-sm-4.active
+						p.a#show-concepts( href="#" onclick="renderTest('tests')" style="margin-right:10px" ) Tests
+						input#userid( type="hidden" value="#{userid}" )
+					div.inner-contener.concepts2
+							div.margin-left-10
+								div.margin-top-20.margin-bottom-20
+									select#chapters-list.form-control( onchange="onChapterChanged(this)"  )
+										- if (chapters)
+											- each chapter in chapters
+												- if (chapter.id + ' ' == lesson.chapter + ' ')
+													option( value="#{chapter.id}") #{chapter.title}
+												- else
+													option( value="#{chapter.id}" ) #{chapter.title}
+												- endif     
+								div.div.margin-top-20.margin-bottom-20
+									div#concepts
+										div.concept-group
+											div.one-column
+												div.column.column-1
+											div.two-columns
+												div.column.column-1
+												div.column.column-2
+											div.three-columns.my-btns
+												div.column.column-1
+												div.column.column-2
+												div.column.column-3
+										
+											div.concept-content-group.hidden
+										div.concept-content-item
+							form(action="#")      
+								div.div.margin-top-20.margin-bottom-20.padd-l-r-10
+									div#test-list
+										div.test-title 
+										div.questions
+																	
+								div.div.margin-top-20.margin-bottom-20.padd-l-r-10
+									div#score.hidden
+										div.test-title
+										div.next-question
+										div.score-group
+
+block contentScript
+	script.
+		var userid = '#{userid}';
+		var lesson = {
+			'isLesson': '#{lesson.isLesson}',
+			'syllabus_name': '#{lesson.syllabus_name}',
+			'syllabus': '#{lesson.syllabus}',
+			'grade_name': '#{lesson.grade_name}',
+			'grade': '#{lesson.grade}',
+			'chapter': '#{lesson.chapter}',
+			'concept': '#{lesson.concept}'
+		};
+	- if (user && user.school_name)
+		script.
+			var user = {
+				'name': '#{user.name}',
+				'school_name': '#{user.school_name}',
+				'grade_name': '#{lesson.grade_name}',
+				'section_name': '#{user.section}'
+			};
+	- endif
+
+	- if (classmates && classmates.length >= 0)
+		script.
+			classmates = !{JSON.stringify(classmates)};
+	- endif 
+	- if (friends && friends.length >= 0)
+		script.
+			friends = !{JSON.stringify(friends)};
+	- endif
+
+	script.
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-68552555-1']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();

@@ -1,0 +1,203 @@
+.home-background {
+  background: url('../images/home-background.jpg') center top;
+
+  @include background-size(cover);
+}
+
+.logo-big {
+  margin: 0 auto;
+  margin-top: 79px;
+  margin-bottom: 32px;
+}
+
+.signin-form, .registration-form {
+  font-family: 'HelveticaNeueCyr-Light', sans-serif;
+  max-width: 324px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid #54a9ff;
+
+  @include border-radius(5px);
+  @include box-shadow(9px 9px 21px rgba(#0f0b10, 0.7));
+
+  .form-header {
+    margin: 0;
+    font-size: 28px;
+    padding: 15px 0;
+    text-align: center;
+    color: #fff;
+    border-bottom: 2px solid #d2dbe7;
+
+    @include background-image(linear-gradient(#479cff, #459aff));
+    @include box-shadow(inset 0 1px 0 #7ec5ff);
+    @include border-top-left-radius(5px);
+    @include border-top-right-radius(5px);
+
+    span {
+      @include text-shadow(-1px -1px 0px rgba(#0f0b10, 0.3));
+    }
+  }
+
+  .form-content {
+    padding: 18px 15px 25px 15px;   
+  }
+
+  .form-control {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+  }
+
+  p {
+    font-size: 28px;
+    color: #000000;
+  }
+
+  .btn {
+    font-size: 17px;
+  }
+
+  .btn-fb {
+    border: 1px solid #3753a3;
+    float: left;
+
+    @include background-image(linear-gradient(#4260af, #3753a3));
+    @include box-shadow(1px 1px 3px rgba(#000000, 0.4), inset 1px 1px 0 #768abe);
+
+    &:hover, &:focus{
+      border: 1px solid #3753a3;
+      color: #ffffff;
+
+      @include background-image(linear-gradient(#3753a3, #4260af));
+    }
+
+    .icon {
+      background: url('../images/sprite.png');
+      background-position: -867px 0;
+      display: inline-block;
+      width: 8px;
+      height: 16px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+  }
+
+  .btn-gp {
+    border: 1px solid #b62a1a;
+    float: right;
+
+    @include background-image(linear-gradient(#d94733, #d23b2a));
+    @include box-shadow(1px 1px 3px rgba(#000000, 0.4), inset 1px 1px 0 #e38e8e);
+
+    &:hover, &:focus{
+      border: 1px solid #b62a1a;
+      color: #ffffff;
+
+      @include background-image(linear-gradient(#d23b2a, #d94733));
+    }
+
+    .icon {
+      background: url("../images/sprite.png");
+      background-position: -875px 0;
+      display: inline-block;
+      width: 18px;
+      height: 20px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+  }
+
+  #alert-block p{
+    font-size: 13px;
+    color: #a94442;
+    margin: 20px 0 0 0;
+  }
+
+  .form-group {
+    margin-bottom: 8px;
+  }
+
+  .form-group:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.btn-singin {
+  display: block;
+  width: 100%;
+  border: 1px solid #12841b;
+
+  @include background-image(linear-gradient(#3da746, #339a3a));
+  @include box-shadow(1px 1px 3px rgba(#000000, 0.4), inset 1px 1px 0 #a2ffc3);
+
+  &:hover, &:focus{
+    border: 1px solid #12841b;
+    color: #ffffff;
+
+    @include background-image(linear-gradient(#339a3a, #3da746));
+  }
+}
+
+.forgot-pass {
+  font-family: 'HelveticaNeueCyr-Light', sans-serif;
+  max-width: 324px;
+  margin: 5px auto;
+
+  a {
+    float: right;
+    color: #fff;
+  }
+}
+
+.btn-cancel {
+  border: 1px solid #b62a1a;
+
+  @include background-image(linear-gradient(#ff5742, #ff4a37));
+  @include box-shadow(1px 1px 3px rgba(#000000, 0.4), inset 1px 1px 0 #e38e8e);
+
+  &:hover, &:focus{
+    border: 1px solid #b62a1a;
+    color: #ffffff;
+
+    @include background-image(linear-gradient(#ff4a37, #ff5742));
+  }
+}
+
+.btn-options {
+  max-width: 324px;
+  margin: 0 auto;
+
+  .btn-option {
+    float: left;
+    width: 50%;
+    margin-top: 11px;
+    text-align: center;
+    padding-right: 10px;
+
+    .btn {
+      width: 100%;
+    }
+
+    p {
+      font-size: 12px;
+      margin: 5px 0;
+
+      &.blue {
+        color: #264478;
+      }
+
+      &.white {
+        color: #fff;
+      }
+    }
+
+    &:last-child {
+      padding-left: 10px;
+      padding-right: 0;
+    }
+  }
+}
+
+.signin-form #alert-block .alert-success p,
+.registration-form #alert-block .alert-success p {
+  color: #3c763d;
+}

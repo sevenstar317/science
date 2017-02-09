@@ -1,0 +1,12 @@
+extends layout
+
+block content
+	div.title.center Which Class Are You in?
+	div.grades
+		div.row
+			- if (grades)
+				- grades.forEach( function(item){
+					div.col-xs-6.col-sm-3.center
+						button.grade-item( type="button" ) #{item.grade}th Grade
+				- })
+		

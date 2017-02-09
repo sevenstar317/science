@@ -1,0 +1,58 @@
+extends layout
+
+block contentHead
+	link( href="/css/offcanvas.css", rel="stylesheet", media="screen" )
+	script( src="/js/offcanvas.js" )
+	script( src="/js/afterLogin.js" )
+	script( src="/js/social-share.js" )
+	//script(src="https://apis.google.com/js/platform.js" async defer / )
+	script(src='https://apis.google.com/js/platform.js', async='', defer='')
+	
+	
+block content 
+	div.margin-top-20.col-center
+		div.user-info
+			img(style="heigth:100px;width:100px;border-radius:20px;")#user-profile-image( src="#{userphoto}")
+			div.profile-name #{username}
+			div#percentile
+				span#user-percentile You are the part of 'Science is Fun at ' 
+				span.schoolname #{schoolname} 
+				p.user-percentage
+				
+				span#caption 
+				input#gradename( type="hidden" name="gradename" value="#{gradename}" )
+				input#syllabusname( type="hidden" name="question" value="#{syllabusname}" )
+				input#userid( type="hidden" name="question" value="#{userid}" )
+				input#userschool( type="hidden" value="#{schoolname}" )
+				//input#logintype( type="hidden" value="#{logintype}" )
+				
+	div#fb-root
+		
+		a.fb_share(href="http://scienceisfun.mobiloitte.org:3000" data-title="User Percenage and Percentile" data-desc="Some description for this article" style="margin-left:610px;" onclick="_gaq.push(['_trackEvent', 'Share on Facebook', Click]);" )
+			img(src="/social_buttons/fb-share-button1.jpg" width="15%" height="50%" style="padding-bottom:24px;" )
+		span#google-share
+			.g-plus(data-action="share" data-height="30" data-href="http://scienceisfun.mobiloitte.org:3000/afterLogin" data-annotation="bubble" onclick="_gaq.push(['_trackEvent', 'Share on G+', Click]);")
+		
+	
+	div.h-action
+		div.ac-btn
+			a#show-concepts.btn.btn-primary( href="#" onclick="renderLesson('lessons')" style="margin-right:10px" ) LESSONS			
+		div.ac-btn
+			a#show-concepts.btn.btn-success( href="#" onclick="renderTest('tests')" style="margin-right:10px" ) TESTS
+		div.ac-btn
+			a#show-concepts.btn.btn-warning( href="#" onclick="renderMyclass('myclass')" style="margin-right:10px" ) MY CLASS
+
+
+block contentScript
+	script.
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-68552555-1']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+	
+	
+

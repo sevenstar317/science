@@ -1,0 +1,145 @@
+extends layout
+
+block contentHead
+	link( href="/css/offcanvas.css", rel="stylesheet", media="screen" )
+	script( src="/js/offcanvas.js" )
+	script( src="/js/search_video.js" )
+
+block content
+	div.top-nav.container-fluid
+		div.row
+			nav
+				ul
+					li.nav-item
+						a(href="/")
+							i.nav-item-icon.nav-item-icon-home
+							span Home
+					li.nav-item
+						a(href="/myclass")
+							i.nav-item-icon.nav-item-icon-class
+							span My Class
+					li.nav-item
+						a.active(href="/lessons")
+							i.nav-item-icon.nav-item-icon-lessons
+							span Lessons
+					li.nav-item
+						a(href="/tests")
+							i.nav-item-icon.nav-item-icon-tests
+							span Tests
+	div.content-wrapper.container-fluid
+		div.row
+			div.sidebar-block
+				nav
+					ul
+						li.nav-item
+							a(href="/profile/view")
+								i.nav-item-icon.nav-item-icon-home
+								span Profile
+						li.nav-item
+							a(href="/myclass")
+								i.nav-item-icon.nav-item-icon-class
+								span My Class
+						li.nav-item
+							a.active(href="/lessons")
+								i.nav-item-icon.nav-item-icon-lessons
+								span Lessons
+							ul
+								- if (chapters)
+									- each chapter in chapters
+										li.nav-item
+											- if (chapter.id + ' ' == lesson.chapter + ' ') 
+												a.active(href="#" data-chapter-id="#{chapter.id}" onclick="onChapterChanged(event)" ) #{chapter.title}
+											- else
+												a(href="#" data-chapter-id="#{chapter.id}" onclick="onChapterChanged(event)" ) #{chapter.title}
+											- endif
+						li.nav-item
+							a(href="/tests")
+								i.nav-item-icon.nav-item-icon-tests
+								span Tests
+						li.nav-item
+							a(href="/signout")
+								i.nav-item-icon.nav-item-icon-logout
+								span Log Out
+
+			div.content-block
+				div.page-description
+					- var chapterName
+					- if (chapters)
+						- each chapter in chapters
+							- if (chapter.id + ' ' == lesson.chapter + ' ') 
+								- chapterName = chapter.title
+							- endif
+					h1.page-title Lessons
+					h2.page-info.search-video-page Add video
+				div.page-content.container-fluid
+					div.content-lesson
+						p.back
+							a#nav-chapter.inline-block( href="/lessons?syllabus=#{concept.syllabus}&grade=#{concept.grade}&chapter=#{concept.chapter}" )
+							a#nav-concept.inline-block( href="/concept?syllabus=#{concept.syllabus}&grade=#{concept.grade}&chapter=#{concept.chapter}&concept=#{concept.concept}" )
+							span.inline-block &nbsp; Add Video
+								
+						- if (user)
+							div.video-search.input-group
+								span.input-group-addon Search
+								input#search-input.form-control.form-search.lens-form-control( type="text" placeholder="Search Video" name="search" )
+								a( href="#" onclick="searchVideos()" )
+						- if (!user)
+							div.guest-note.note-item.full-width.inline-block
+								div.content( style="margin:5px;" )
+									p.note-content You have note enrolled in any class.
+									p.note-content To add a video, 
+										a(href="/signin") Sign in
+										&nbsp or &nbsp
+										a(href="/signup") Sign up for Free
+						- else
+							div#searched-video
+						div.col-xs-12.col-sm-3
+
+	div.modal.fade#video-modal( tabindex="-1" role="dialog" aria-labelledby="Video" aria-hidden="true" )
+		div.modal-dialog
+			div.modal-content
+				div.modal-header
+					button.close( type="button" data-dismiss="modal" aria-hidden="true" ) &times;
+				div.modal-body
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+	div#alert-modal.hidden
+
+	script.
+		var userid = '#{userid}';
+		var lesson = {
+			'isLesson': '#{lesson.isLesson}',
+			'syllabus_name': '#{lesson.syllabus_name}',
+			'syllabus': '#{lesson.syllabus}',
+			'grade_name': '#{lesson.grade_name}',
+			'grade': '#{lesson.grade}',
+			'chapter': '#{lesson.chapter}',
+			'concept': '#{lesson.concept}'
+		};
+		var concept = {
+			'syllabus': '#{concept.syllabus}',
+			'grade': '#{concept.grade}',
+			'chapter': '#{concept.chapter}',
+			'concept': '#{concept.concept}'
+		};
+		var concept_name = '#{details.title}';
+		var chapter_name = '#{chapterName}';
+
+	- if (videos && videos.length >= 0)
+		script.
+			added_videos = !{JSON.stringify(videos)};
+	- endif
+
+	- if (user)
+		script.
+			var user = {
+				'name': '#{user.name}',
+				'photo': '#{userphoto}',
+				'school_name': '#{user.school_name}',
+				'grade_name': '#{lesson.grade_name}',
+				'section_name': '#{user.section}'
+			};
+	- endif

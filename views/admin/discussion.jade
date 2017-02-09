@@ -1,0 +1,41 @@
+extends layout
+
+block contentHead
+	link( href="/css/fileinput.min.css", rel="stylesheet", media="screen" )
+	script( type="text/javascript" src="/js/fileinput.min.js" )
+	script( type="text/javascript" src="/js/validator.min.js" )
+	script( type="text/javascript" src="/js/admin-discussion.js" )
+
+block content
+	form(action="/admin/discussion/edit" method="post")
+		input#id(type="hidden" name="id" value="#{discussion._id}")
+		div.content-header.inline-block.full-width
+			h3.pull-left Edit Discussion
+			button.btn.btn-default.pull-right( type="button" onclick="save()" ) Save
+			button.btn.btn-default.pull-right.margin-right-10( type="button" onclick="deleteConcept()" ) Delete
+			a.btn.btn-default.btn-back.pull-right( href="/admin/discussions" ) < Back
+		div#alert-block
+		div.content-body
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Title
+				input.form-control.edit-field( type="text" name="title" value="#{discussion.title}" required)
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Text
+				textarea.form-control.edit-field( type="text" name="text" style="min-height:150px" required)
+				p#pretext.hidden #{discussion.text}
+			
+		div.responses
+			
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			sapn.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+
+	script.
+		var concept_id = '#{discussion._id}';
+	
+	- if (syllabuses && syllabuses.length >= 0)
+		script.
+			syllabuses = !{JSON.stringify(syllabuses)};
+	- endif
+

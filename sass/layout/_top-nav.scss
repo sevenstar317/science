@@ -1,0 +1,94 @@
+.top-nav{
+  background: $top-nav;
+
+  ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  li.nav-item {
+    float: left;
+    display: block;
+
+    .nav-item-icon{
+      display: inline-block;
+      background: url('/images/sprite.png');
+      vertical-align: middle;
+
+      &-home{
+        width: 21px;
+        height: 22px;
+        background-position: 0 0;
+      }
+
+      &-class{
+        width: 33px;
+        height: 20px;
+        background-position: -21px 0;
+      }
+
+      &-lessons{
+        width: 21px;
+        height: 21px;
+        background-position: -54px 0;
+      }
+
+      &-tests{
+        width: 18px;
+        height: 15px;
+        background-position: -75px 0;
+      }
+    }
+
+    a{
+      font-size: 18px;
+      color: $top-nav-text;
+      font-family: 'Maven Pro', sans-serif;
+      padding: 16px 0;
+      width: 138px;
+      text-align: center;
+      display: block;
+
+      &.active{
+        text-decoration: none;
+        color: $top-nav-text-active;
+        background: $top-nav-active;
+
+        .nav-item-icon{
+
+          &-home{
+            background-position: -93px 0;
+          }
+
+          &-class{
+            background-position: -114px 0;
+          }
+
+          &-lessons{
+            background-position: -147px 0;
+          }
+
+          &-tests{
+            background-position: -168px 0;
+          }
+        }
+      }
+
+      &.active{
+        @include box-shadow(inset 0 0 5px rgba(#ab5300, 1));
+      }
+
+      &:hover span{
+        text-decoration: underline;
+      }
+
+      span{
+        display: inline-block;
+        padding-left: 5px;
+        vertical-align: middle;
+      }
+    }
+  }
+}

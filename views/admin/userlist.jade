@@ -1,0 +1,66 @@
+extends layout
+
+block contentHead
+	script( type="text/javascript" src="/js/admin-pagenation.js" )
+
+block content
+	div.content-header.inline-block.full-width
+		h3.pull-left Manage Concepts
+		a.btn.btn-default.pull-right( href="/admin/concept/new" ) Add Concept
+
+	div#show-bar
+		p#show-info.pull-left( style="margin:3px 0 0 0;" )
+		select#count-per-page.pull-right( onchange="changeCountPerPage()" )
+			option( value="10" ) 10
+			option( value="25" selected ) 25
+			option( value="50" ) 50
+			option( value="100" ) 100
+			option( value="-1" ) All
+		p.pull-right( style="margin:3px 5px 0 0;" ) Show:
+	
+	div.content-table
+		table.table.table-hover
+			colgroup
+				col( width="50" )
+				col
+				col
+				col( width="70" )
+				col( width="60" )
+			thead
+				tr.headings
+					th
+						span No
+					th
+						span Name
+					th
+						span E-Mail
+					th
+						span Status
+					th
+						span Action
+			tbody
+				- var totalCount = 0
+				- if (users)
+					- totalCount = users.length
+					- users.forEach(function(item, index){
+						tr( id="item-#{index + 1}" )
+							td #{index + 1}
+							td #{item.name}
+							td #{item.email}
+							- if (item.disabled == 'true')
+								td.user-enabled Disabled
+							- else
+								td.user-enabled Enabled
+							td 
+								a( href="/admin/users/manage?id=#{item.id}" ) Edit
+					- })
+
+	div#page-btnset.btn-group.pull-right.margin-top-20.margin-bottom-10
+			a.btn.btn-default.page-first( href="#" title="First Page" onclick="goToPage('first')" ) First
+			a.btn.btn-default.page-prev( href="#" title="Prev Page" onclick="goToPage('prev')" ) Prev
+			a.btn.btn-default.page-next( href="#" title="Next Page" onclick="goToPage('next')" ) Next
+			a.btn.btn-default.page-last( href="#" title="Last Page" onclick="goToPage('last')" ) Last
+
+	script.
+		var totalCount = #{totalCount};
+

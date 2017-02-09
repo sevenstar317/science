@@ -1,0 +1,74 @@
+extends layout
+
+block contentHead
+	link( href="/css/datepicker.css", rel="stylesheet", media="screen" )
+	script( type="text/javascript" src="/js/bootstrap-datepicker.js" )
+	script( type="text/javascript" src="/js/admin-users.js" )
+
+block content
+	div.row
+		div.col-xs-12.col-sm-6
+			h3 Summary
+			div
+				p.report-item-title.pull-left Total Users:
+				p #{users.total_count}
+			div
+				p.report-item-title.pull-left Total Verified Users:
+				p #{users.verified_count}
+			div
+				p.report-item-title.pull-left New Registered Users in last 7 days:
+				p #{users.new_7_count}
+			div
+				p.report-item-title.pull-left Active Users in last 7 days:
+				p #{users.active_7_count}
+		div.col-xs-12.col-sm-6
+			h3 Download
+			div#alert-block
+			div.margin-bottom-20
+				p Registered Date:
+				div.date-filter.first.input-group.date.pull-left( data-date-format="yyyy-mm-dd" )
+					input#registered_begin.form-control( type="text" placeholder="Begin" )
+					span.input-group-addon
+						i.glyphicon.glyphicon-calendar
+				div.date-filter.input-group.date( data-date-format="yyyy-mm-dd" )
+					input#registered_end.form-control( type="text" placeholder="End" )
+					span.input-group-addon
+						i.glyphicon.glyphicon-calendar
+			div.margin-bottom-20
+				p Last Signin Date:
+				div.date-filter.first.input-group.date.pull-left( data-date-format="yyyy-mm-dd" )
+					input#signin_begin.form-control( type="text" placeholder="Begin" )
+					span.input-group-addon
+						i.glyphicon.glyphicon-calendar
+				div.date-filter.input-group.date( data-date-format="yyyy-mm-dd" )
+					input#signin_end.form-control( type="text" placeholder="End" )
+					span.input-group-addon
+						i.glyphicon.glyphicon-calendar
+			div.margin-bottom-20
+				p.pull-left Verified Status:
+				div.filter-verified-status.inline-block
+					label( onclick="selectVerifiedStatus('all')" )
+						input#verified-filter-all( type="radio" name="verified" checked )
+						| &nbsp;&nbsp;All
+					br
+					label( onclick="selectVerifiedStatus('yes')" )
+						input#verified-filter-yes( type="radio" name="verified" )
+						| &nbsp;&nbsp;Yes
+					br
+					label( onclick="selectVerifiedStatus('no')" )
+						input#verified-filter-no( type="radio" name="verified" )
+						| &nbsp;&nbsp;No
+			div.margin-bottom-20
+				p.pull-left Grades:
+				select#filter-grades.filter-select( multiple )
+					- if (grades)
+						- each grade in grades
+							option( value="#{grade._id}" ) #{grade.grade}
+
+			button.btn.btn-default( type="button" onclick="download()" ) Download
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			sapn.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+

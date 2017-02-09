@@ -1,0 +1,1047 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Swagger Scienceis Fun",
+        "description": "This is a sample server Venomapps server.  You can find out more about Swagger at <a href=\"http://swagger.io\">http://swagger.io</a> or on irc.freenode.net, #swagger.  For this sample, you can use the api key \"access-token\" to test the authorization filters",
+        "termsOfService": "http://helloreverb.com/terms/",
+        "contact": {
+            "email": "thanhle09t2bkdn@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "host": "127.0.0.1:3000",
+    "basePath": "/api",
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/signin": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "description": "Signin",
+                "operationId": "actionSignin",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "Email",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "description": "Content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "registration_id",
+                        "in": "formData",
+                        "description": "Registration id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/password/reset": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "description": "Reset",
+                "operationId": "actionReset",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "Email",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/getInputSingup": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "description": "Get information syllabuses, grades",
+                "operationId": "actionGetInputSingup",
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/signup": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "description": "Signin",
+                "operationId": "actionSignin",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "Name",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "social_id",
+                        "in": "formData",
+                        "description": "social_id",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "social_type",
+                        "in": "formData",
+                        "description": "social_type",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi",
+                        "enum": [
+                            "facebook",
+                            "google"
+                        ]
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "Email",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "description": "Password",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "confirm_password",
+                        "in": "formData",
+                        "description": "Confirm Password",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "school_name",
+                        "in": "formData",
+                        "description": "School Name",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "school_addr",
+                        "in": "formData",
+                        "description": "School address",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "school_city",
+                        "in": "formData",
+                        "description": "School city",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "school_postalcode",
+                        "in": "formData",
+                        "description": "School postal code",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "school_country",
+                        "in": "formData",
+                        "description": "School Country",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "syllabus",
+                        "in": "formData",
+                        "description": "syllabus get from path getInputSingup",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "grade",
+                        "in": "formData",
+                        "description": "grade get from path getInputSingup",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "section",
+                        "in": "formData",
+                        "description": "section",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "photo",
+                        "in": "formData",
+                        "description": "photo",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "file"
+                    }
+                ]
+            }
+        },
+        "/signout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "description": "Signout",
+                "operationId": "actionSignout",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "formData",
+                        "description": "token Auth",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/profile/get": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "description": "Signout",
+                "operationId": "actionSignout",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "formData",
+                        "description": "token Auth",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/socialSignin": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "description": "socialSignin",
+                "operationId": "actionReset",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "social_id",
+                        "in": "formData",
+                        "description": "social_id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "social_type",
+                        "in": "formData",
+                        "description": "social_type",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi",
+                        "default": "facebook",
+                        "enum": [
+                            "facebook",
+                            "google"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/get/classmates": {
+            "post": {
+                "tags": [
+                    "Classmates"
+                ],
+                "description": "get classmates",
+                "operationId": "actionGetClassmates",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "formData",
+                        "description": "token Auth",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/getBoard": {
+            "post": {
+                "tags": [
+                    "Index"
+                ],
+                "description": "get board",
+                "operationId": "actionGetBoard",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "formData",
+                        "description": "token Auth",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/getConcepts": {
+            "post": {
+                "tags": [
+                    "Index"
+                ],
+                "description": "get List Lesson from chapter_id",
+                "operationId": "actionGetConcepts",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "chapter_id",
+                        "in": "formData",
+                        "description": "Chaper Id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/getConcept": {
+            "post": {
+                "tags": [
+                    "Index"
+                ],
+                "description": "get Detail Lesson from concept_id",
+                "operationId": "actionGetConcept",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "concept_id",
+                        "in": "formData",
+                        "description": "Concept id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/links": {
+            "post": {
+                "tags": [
+                    "Index"
+                ],
+                "description": "get grade, chaper",
+                "operationId": "actionGetConcept",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "formData",
+                        "description": "token Auth",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "kind",
+                        "in": "formData",
+                        "description": "Kind selet grade/chaper",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi",
+                        "default": "grade",
+                        "enum": [
+                            "grade",
+                            "chapter"
+                        ]
+                    },
+                    {
+                        "name": "syllabus",
+                        "in": "formData",
+                        "description": "syllabus id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "grade",
+                        "in": "formData",
+                        "description": "Grade id",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/syllabuses": {
+            "get": {
+                "tags": [
+                    "Index"
+                ],
+                "description": "get syllabuses",
+                "operationId": "actionSyllabuses",
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/grades": {
+            "post": {
+                "tags": [
+                    "Index"
+                ],
+                "description": "get chapers",
+                "operationId": "actionGrades",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "syllabus",
+                        "in": "formData",
+                        "description": "syllabus id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/chapers": {
+            "post": {
+                "tags": [
+                    "Index"
+                ],
+                "description": "get chapers",
+                "operationId": "actionChapers",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "syllabus",
+                        "in": "formData",
+                        "description": "syllabus id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "grade",
+                        "in": "formData",
+                        "description": "grade id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/discussions": {
+            "post": {
+                "tags": [
+                    "Index"
+                ],
+                "description": "get discussions",
+                "operationId": "actionDiscussions",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "formData",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "search",
+                        "in": "formData",
+                        "description": "search",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "formData",
+                        "description": "search",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "integer",
+                        "default": 10
+                    },
+                    {
+                        "name": "chapter",
+                        "in": "formData",
+                        "description": "value chaperId or all",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "formData",
+                        "description": "Kind selet popular/recent",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi",
+                        "default": "grade",
+                        "enum": [
+                            "popular",
+                            "recent"
+                        ]
+                    },
+                    {
+                        "name": "sortAnswers",
+                        "in": "formData",
+                        "description": "Kind selet all/unanswered",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi",
+                        "default": "grade",
+                        "enum": [
+                            "all",
+                            "unanswered"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/create/discussion": {
+            "post": {
+                "tags": [
+                    "Index"
+                ],
+                "description": "get chapers",
+                "operationId": "actionChapers",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "formData",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "title",
+                        "in": "formData",
+                        "description": "Title",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "text",
+                        "in": "formData",
+                        "description": "description",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "chapter",
+                        "in": "formData",
+                        "description": "chaper id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/create/response": {
+            "post": {
+                "tags": [
+                    "Index"
+                ],
+                "description": "Create reply",
+                "operationId": "actionCreateResponse",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "formData",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "text",
+                        "in": "formData",
+                        "description": "Body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "secondLvl",
+                        "in": "formData",
+                        "description": "secondLvl",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "boolean"
+                        },
+                        "collectionFormat": "multi",
+                        "default": "false",
+                        "enum": [
+                            "true",
+                            "false"
+                        ]
+                    },
+                    {
+                        "name": "response",
+                        "in": "formData",
+                        "description": "response id null when secondLvl == false",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "discussion",
+                        "in": "formData",
+                        "description": "discussion id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/test/getCategoriesTest": {
+            "post": {
+                "tags": [
+                    "Test"
+                ],
+                "description": "get categories of test",
+                "operationId": "getCategoriesTest",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "formData",
+                        "description": "token Auth",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/test/getSubCategories": {
+            "post": {
+                "tags": [
+                    "Test"
+                ],
+                "description": "get categories of test",
+                "operationId": "getSubCategories",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "formData",
+                        "description": "token Auth",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "chapterid",
+                        "in": "formData",
+                        "description": "chaper Id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/test/getTestsList": {
+            "post": {
+                "tags": [
+                    "Test"
+                ],
+                "description": "get list tests",
+                "operationId": "actionGetBoard",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "formData",
+                        "description": "token Auth",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "chapterid",
+                        "in": "formData",
+                        "description": "chaper Id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/profile/set": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "description": "get Profile",
+                "operationId": "actionGetProfile",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "formData",
+                        "description": "token Auth",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "name",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "school_name",
+                        "in": "formData",
+                        "description": "school_name",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "school_addr",
+                        "in": "formData",
+                        "description": "school_addr",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "school_city",
+                        "in": "formData",
+                        "description": "school_city",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "school_postalcode",
+                        "in": "formData",
+                        "description": "school_postalcode",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "integer"
+                    },
+                    {
+                        "name": "school_country",
+                        "in": "formData",
+                        "description": "school_country",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "syllabus",
+                        "in": "formData",
+                        "description": "syllabus id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "grade",
+                        "in": "formData",
+                        "description": "grade id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "section",
+                        "in": "formData",
+                        "description": "section",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "description": "password",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "photo_removed",
+                        "in": "formData",
+                        "description": "photo_removed",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "string",
+                        "default": "removed"
+                    },
+                    {
+                        "name": "photo",
+                        "in": "formData",
+                        "description": "photo",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "type": "file"
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {
+
+    },
+    "externalDocs": {
+        "description": "Find out more about Swagger",
+        "url": "http://swagger.io"
+    }
+}

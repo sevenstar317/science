@@ -1,0 +1,59 @@
+extends layout
+
+block contentHead
+	link( href="/css/jquery.videocontrols.css", rel="stylesheet", media="screen" )
+	script( src="/js/jquery.videocontrols.js" )
+
+block content
+	div.concept-video.col-sm-6.nopadding
+		video( controls="controls", width="100%", height="100%")
+			source( type="video/mp4", src="/videos/video1.mp4" )
+		a.pull-right.more-link( href="/contents/videos" ) More Videos...
+	div.concept-text
+		p.
+			True, there is no explicit mention of it, but if you modify the given code snippets and examples to remove one of their core , you're gonna have a bad time :). I don't really see a point in mentioning this specifically—it's how the component was built.
+			Given v3.1's addition of the .container-fluid though, I think we should call out in the docs that you now have options for that container.
+			True, there is no explicit mention of it, but if you modify the given code snippets and examples to remove one of their core , you're gonna have a bad time :). I don't really see a point in mentioning this specifically—it's how the component was built.
+			Given v3.1's addition of the .container-fluid though, I think we should call out in the docs that you now have options for that container.
+			True, there is no explicit mention of it, but if you modify the given code snippets and examples to remove one of their core , you're gonna have a bad time :). I don't really see a point in mentioning this specifically—it's how the component was built.
+			Given v3.1's addition of the .container-fluid though, I think we should call out in the docs that you now have options for that container.
+			True, there is no explicit mention of it, but if you modify the given code snippets and examples to remove one of their core , you're gonna have a bad time :). I don't really see a point in mentioning this specifically—it's how the component was built.
+			Given v3.1's addition of the .container-fluid though, I think we should call out in the docs that you now have options for that container.
+			True, there is no explicit mention of it, but if you modify the given code snippets and examples to remove one of their core , you're gonna have a bad time :). I don't really see a point in mentioning this specifically—it's how the component was built.
+			Given v3.1's addition of the .container-fluid though, I think we should call out in the docs that you now have options for that container.
+			True, there is no explicit mention of it, but if you modify the given code snippets and examples to remove one of their core , you're gonna have a bad time :). I don't really see a point in mentioning this specifically—it's how the component was built.
+			Given v3.1's addition of the .container-fluid though, I think we should call out in the docs that you now have options for that container.
+			True, there is no explicit mention of it, but if you modify the given code snippets and examples to remove one of their core , you're gonna have a bad time :). I don't really see a point in mentioning this specifically—it's how the component was built.
+			Given v3.1's addition of the .container-fluid though, I think we should call out in the docs that you now have options for that container.
+	div.concept-reference.full-width.inline-block
+		h4 References:
+		div.reference-item.full-width.inline-block
+			img.thumb( src="/imgs/thumb1.png" )
+			div.content.inline-block
+				p.reference-item-title My Reference
+				a.reference-item-link( href="/concepts" ) www.references.com
+		a.pull-right.more-link( href="/contents/references" ) More References...
+	div.concept-note.full-width.inline-block
+		h4 Notes:
+		div.note-item.full-width.inline-block
+			div.person.pull-left
+				img( src="/imgs/abata1.png", title="steve jobs" )
+				p.person-name steve jobs
+			div.public.pull-right
+				img( src="/images/public.png")
+				p public
+			div.content
+				p.note-item-date 12 Sep 2014
+				p.note-content &nbsp;&nbsp;Given v3.1's addition of the .container-fluid though, I think we should call out in the docs that you now have options for that container.<br>dition of the .container-fluid though, I think we should call out in the docs that you now have options for that container.<br>True, there is no explicit mention of it, but if you modify the given code snippets and examples to remove one of their core , you're gonna have a bad time :). I don't really see a point in mentioning this specifically—it's how the component was built.<br>Given v3.1's addition of the .container-fluid though, I think we should call out in the docs that you now have options for that container.<br>True, there is no explicit mention of it, but if you modify the given code snippets and examples to remove one of their core , you're gonna have a bad time :). I don't really see a point in mentioning this specifically—it's how the component was built.<br>Given v3.1's additio
+		a.pull-right.more-link( href="/contents/notes" ) More Notes...
+		div.note-add.full-width.inline-block
+			textarea( placeholder="Add your notes experiment results, feild trip reports. anything!" )
+			div.pull-right
+				button.btn.btn-default.public( type="button" )
+					img( src="/images/public.png" )
+				button.btn.btn-default.btn-note-add( type="button" ) Add note
+
+block contentScript
+	script
+		$('video').videocontrols();
+

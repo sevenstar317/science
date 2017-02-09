@@ -1,0 +1,285 @@
+extends layout
+
+block contentHead
+	link( href="/css/offcanvas.css", rel="stylesheet", media="screen" )
+	link( href="/css/quill.base.css", rel="stylesheet", media="screen" )
+	link( href="/css/quill.snow.css", rel="stylesheet", media="screen" )
+	script( src="/js/offcanvas.js" )
+	script(src="/js/quill.min.js")
+	script( src="/js/jquery.fitvids.js" )
+	script( src="/js/concept_detail.js" )
+
+block content
+	div.top-nav.container-fluid
+		div.row
+			nav
+				ul
+					li.nav-item
+						a(href="/")
+							i.nav-item-icon.nav-item-icon-home
+							span Home
+					li.nav-item
+						a(href="/myclass")
+							i.nav-item-icon.nav-item-icon-class
+							span My Class
+					li.nav-item
+						a.active(href="/lessons")
+							i.nav-item-icon.nav-item-icon-lessons
+							span Lessons
+					li.nav-item
+						a(href="/tests")
+							i.nav-item-icon.nav-item-icon-tests
+							span Tests
+
+	div.content-wrapper.container-fluid
+		div.row
+			div.sidebar-block
+				nav
+					ul
+						li.nav-item
+							a(href="/profile/view")
+								i.nav-item-icon.nav-item-icon-home
+								span Profile
+						li.nav-item
+							a(href="/myclass")
+								i.nav-item-icon.nav-item-icon-class
+								span My Class
+						li.nav-item
+							a.active(href="/lessons")
+								i.nav-item-icon.nav-item-icon-lessons
+								span Lessons
+							ul
+								- if (chapters)
+									- each chapter in chapters
+										li.nav-item
+											- if (chapter.id + ' ' == lesson.chapter + ' ') 
+												a.active(href="/lessons?syllabus=#{lesson.syllabus}&grade=#{lesson.grade}&chapter=#{chapter.id}") #{chapter.title}
+											- else
+												a(href="/lessons?syllabus=#{lesson.syllabus}&grade=#{lesson.grade}&chapter=#{chapter.id}" ) #{chapter.title}
+											- endif
+						li.nav-item
+							a(href="/tests")
+								i.nav-item-icon.nav-item-icon-tests
+								span Tests
+						li.nav-item
+							a(href="/signout")
+								i.nav-item-icon.nav-item-icon-logout
+								span Log Out
+
+			div.content-block
+				div.page-description
+					- var chapterName
+					- if (chapters)
+						- each chapter in chapters
+							- if (chapter.id + ' ' == lesson.chapter + ' ') 
+								- chapterName = chapter.title
+							- endif
+					h1.page-title Lessons
+					h2.page-info #{chapterName}
+				div.page-content.container-fluid
+					div.content.content-lesson
+						p.back
+							a#nav-chapter.inline-block( href="/lessons?syllabus=#{concept.syllabus}&grade=#{concept.grade}&chapter=#{concept.chapter}" )
+							span#nav-concept.inline-block &nbsp;#{details.title}
+						h3.text-center.content-title #{details.title}
+						
+						div.concept-lesson
+							div#default-video
+								div.concept-video
+								div( id="video-info-#{default_video.url}" ).video-info.clearfix
+									p.viewCounts.pull-right 2472 Views
+									p.author.pull-right By 'Uploader'
+									p.video-title Video Title
+
+							div.concept-details.clearfix
+								div.detail-addtions.clearfix
+									p.detail-addtions-title Additional Reading
+									//div.concept-img-block.clearfix
+										img.concept-img( src="#{details.image2}" )
+										a.pull-right(href="#{details.image2_source}" target="_blank") #{details.image2_credit}
+									div.reference-sm-item.clearfix
+										- if (reference)
+											img.thumb.pull-left(src="#{reference.image}")
+											p.reference-sm-item-title #{reference.title}
+											a.reference-sm-item-link(href="#{reference.url}") #{reference.domain}
+										- endif
+								h4#title #{details.title}
+								p#description.detail-description #{details.text}
+								a#description-expand.more-data( data-action="more" onclick="onMoreDescription(this)" ) More
+						div.concept-note.responses(class=notes && notes.length > 10 ? "responses-collapsed" : "")
+							- if (user)
+
+								- if (notes)
+									- notes.forEach(function(item, index){
+										div.note-item.response( item_id="#{item.id}" onmouseover="onMouseContent(this, true)" onmouseout="onMouseContent(this, false)")
+											div.response-first
+												div.responce-wrapper.clearfix
+													div.response-owner
+														-if (item.owner_photo)
+															img.response-owner-photo( src="#{item.owner_photo}" )
+														- else
+															img.response-owner-photo( src="/images/guest.png" )
+														p.response-owner-name #{item.owner_name}
+													div.text-box
+														p.response-meta
+															span.response-owner-name #{item.owner_name}
+															span.response-date #{item.date}
+														p.response-text !{item.note}
+												div.response-options
+													- if (item.owner == userid)
+														div.pull-left.mark-delete.hidden( id="flag-#{item.id}" )
+															a( href="#" onclick="deleteContent('note', '#{item.id}', this)")
+																img( src="images/delete.png" )
+													- else
+														a.report(href="#" onclick="viewUser('note', '#{item.id}')") Report
+													- endif
+													- if (item.isDefault == 'false')
+														div.pull-left.mark-pin.hidden( id="pin-#{item.id}" )
+															a( href="#" onclick="setDefault('note', '#{item.id}')" )
+																img( src="images/pin.png" )
+													- else
+														div.pull-left.mark-pin( )
+															img( src="images/pin.png" )
+													- endif
+												div(style="clear: both;")
+									- })
+								div#send-response.reply.response(class=notes && notes.length > 10 ? "responses-collapsed" : "")
+									button#loadnotes.btn.btn-default.loadnotes Show more notes
+									div.response-first
+										div.responce-wrapper.clearfix
+											div.response-owner
+												img.response-owner-photo(src=user.photo)
+												p.response-owner-name=user.name
+											div.editor-box
+												include ./richtext.jade
+										//textarea#added-note.response-text.form-control(placeholder='Add your notes experiment results, feild trip reports. anything!')
+										div.response-options.clearfix
+											button.btn.btn-default.btn-note-add.pull-right( type="button" id="addNotes" onclick="addNote();" style="margin: 10px;" ) Add Note
+
+					div.sidebar.col-xs-12.col-sm-4
+						div#added-videos.video-group.sidebar-section.clearfix
+							h2.body-color.title Pinned videos
+							- if (!user)
+								div.videos
+							- else
+								div.videos
+								a.concept-add-video.clearfix( href="/searchvideo" onclick="_gaq.push(['_trackEvent', 'Lessons', Click on Add Video]);" )
+									i.icon
+									span Search and add your videos from YouTube
+						div#related-videos.video-group.sidebar-section
+							h2.body-color.title Related Videos
+	
+	div.modal.fade#video-modal( tabindex="-1" role="dialog" aria-labelledby="Video" aria-hidden="true" )
+		div.modal-dialog
+			div.modal-content
+				div.modal-header
+					button.close( type="button" data-dismiss="modal" aria-hidden="true" ) &times;
+				div.modal-body
+
+	div.modal.fade#user-modal( tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true" )
+		div.modal-dialog
+			div.modal-content
+				div.modal-header
+					p.pull-left(style="font-size:18px;margin-top: -10px" ) Profile
+					button.close( type="button" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;") &times;
+				div.modal-body
+					div.classmate-profile
+						img.user-photo( src="/images/guest.png" )
+						div.second-info
+							p.name UserName
+							p.school-name School Name
+							p.location Location
+							p.grade-section Grade and Section
+							p.email email
+							p.update-label.pull-left Receive Updates
+							div.on-off-btnset
+								- if ('true' == 'true')
+									button.btn.btn-success( type="button" onclick="updateOnOff(0)" ) ON
+									button.btn.btn-default( type="button" onclick="updateOnOff(1)" style="display:none" ) OFF
+								- else
+									button.btn.btn-success( type="button" onclick="updateOnOff(0)" style="display:none" ) ON
+									button.btn.btn-default( type="button" onclick="updateOnOff(1)" ) OFF
+								- endif
+							div.margin-top-10
+								a#report-user( href="#" onclick="showReportOption(true)" ) Report
+								div#report-options.hidden
+									label( onclick="selectReportOption('Not in Class')" )
+										input#report-not-in-class( type="radio" name="option" )
+										| Not in Class
+									label( onclick="selectReportOption('Bad Content')" )
+										input#report-bad-content( type="radio" name="option" )
+										| Bad Content
+									label( onclick="selectReportOption('Other')" )
+										input#report-other( type="radio" name="option" )
+										| Other
+									textarea.form-control
+									div.btn-toolbar.margin-top-10
+										button.btn.btn-success( type="button" onclick="reportUser()" ) Submit
+										button.btn.btn-default( type="button" data-dismiss="modal" ) Cancel
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+	div#alert-modal.hidden
+
+	script.
+		var userid = '#{userid}';
+		var lesson = {
+			'isLesson': '#{lesson.isLesson}',
+			'syllabus_name': '#{lesson.syllabus_name}',
+			'syllabus': '#{lesson.syllabus}',
+			'grade_name': '#{lesson.grade_name}',
+			'grade': '#{lesson.grade}',
+			'chapter': '#{lesson.chapter}',
+			'concept': '#{lesson.concept}'
+		};
+		var concept = {
+			'syllabus': '#{concept.syllabus}',
+			'grade': '#{concept.grade}',
+			'chapter': '#{concept.chapter}',
+			'concept': '#{concept.concept}'
+		};
+		var default_video = {
+			'id': '#{default_video.id}',
+			'url': '#{default_video.url}',
+			'owner': '#{default_video.owner}',
+			'date': '#{default_video.date}'
+		};
+		var concept_name = '#{details.title}';
+		var chapter_name = '#{chapterName}';
+
+	- if (videos && videos.length >= 0)
+		script.
+			added_videos = !{JSON.stringify(videos)};
+	- endif
+
+	- if (notes && notes.length >= 0)
+		script.
+			notes = !{JSON.stringify(notes)};
+	- endif
+
+	- if (user)
+		script.
+			var user = {
+				'name': '#{user.name}',
+				'photo': '#{userphoto}',
+				'school_name': '#{user.school_name}',
+				'grade_name': '#{lesson.grade_name}',
+				'section_name': '#{user.section}'
+			};
+	- endif
+
+	script.
+			$('#addNotes').click(function(){
+			     _gaq.push(['_trackEvent', 'Lessons', Click on Add Discussion]);
+			});
+
+	script.
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-68552555-1']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();

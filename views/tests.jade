@@ -1,0 +1,151 @@
+extends layout
+
+block contentHead
+	link( href="/css/offcanvas.css", rel="stylesheet", media="screen" )
+	script( src="/js/offcanvas.js" )
+	script( src="/js/tests.js" )
+
+	
+block content
+	div.top-nav.container-fluid
+		div.row
+			nav
+				ul
+					li.nav-item
+						a(href="/")
+							i.nav-item-icon.nav-item-icon-home
+							span Home
+					li.nav-item
+						a(href="/myclass")
+							i.nav-item-icon.nav-item-icon-class
+							span My Class
+					li.nav-item
+						a(href="/lessons")
+							i.nav-item-icon.nav-item-icon-lessons
+							span Lessons
+					li.nav-item
+						a.active(href="/tests")
+							i.nav-item-icon.nav-item-icon-tests
+							span Tests
+	div.content-wrapper.container-fluid
+		div.row
+			div.sidebar-block
+				nav
+					ul
+						li.nav-item
+							a(href="/profile/view")
+								i.nav-item-icon.nav-item-icon-home
+								span Profile
+						li.nav-item
+							a(href="/myclass")
+								i.nav-item-icon.nav-item-icon-class
+								span My Class
+						li.nav-item
+							a(href="/lessons")
+								i.nav-item-icon.nav-item-icon-lessons
+								span Lessons
+						li.nav-item
+							a.active(href="/tests")
+								i.nav-item-icon.nav-item-icon-tests
+								span Tests
+							ul
+								- if (chapters)
+									- each chapter in chapters
+										li.nav-item
+											- if (chapter.id + ' ' == lesson.chapter + ' ') 
+												a.active(href="#" data-chapter-id="#{chapter.id}" onclick="onChapterChanged(event)" ) #{chapter.title}
+											- else
+												a(href="#" data-chapter-id="#{chapter.id}" onclick="onChapterChanged(event)" ) #{chapter.title}
+											- endif
+
+						li.nav-item
+							a(href="/signout")
+								i.nav-item-icon.nav-item-icon-logout
+								span Log Out
+
+			div.content-block
+				div.page-description
+					h1.page-title Tests
+					h2#test-title.page-info=chapters[0].title
+				div.page-content.container-fluid
+					div.content-tests
+						h3.text-center.content-title Select the test
+						input#userid( type="hidden" value="#{userid}" )
+						div.inner-contener.concepts2
+							div.margin-left-10
+								div.margin-top-20.margin-bottom-20
+									select#chapters-list.form-control( onchange="onChapterChanged(this)"  )
+										- if (chapters)
+											- each chapter in chapters
+												- if (chapter.id + ' ' == lesson.chapter + ' ')
+													option( value="#{chapter.id}") #{chapter.title}
+												- else
+													option( value="#{chapter.id}" ) #{chapter.title}
+												- endif     
+								div.div.margin-top-20.margin-bottom-20
+									div#concepts
+										div.concept-group.clear
+											div.one-column
+												div.column.column-1
+											div.two-columns
+												div.column.column-1
+												div.column.column-2
+											div.three-columns.my-btns
+												div.column.column-1
+												div.column.column-2
+												div.column.column-3
+										
+											div.concept-content-group.hidden
+										div.concept-content-item
+							form(action="#")      
+								div.div.margin-top-20.margin-bottom-20.padd-l-r-10
+									div#test-list
+										div.test-title 
+										div.questions
+																	
+								div.div.margin-top-20.margin-bottom-20.padd-l-r-10
+									div#score.hidden
+										div.test-title
+										div.next-question
+										div.score-group
+
+block contentScript
+	script.
+		var userid = '#{userid}';
+		var lesson = {
+			'isLesson': '#{lesson.isLesson}',
+			'syllabus_name': '#{lesson.syllabus_name}',
+			'syllabus': '#{lesson.syllabus}',
+			'grade_name': '#{lesson.grade_name}',
+			'grade': '#{lesson.grade}',
+			'chapter': '#{lesson.chapter}',
+			'concept': '#{lesson.concept}'
+		};
+	- if (user && user.school_name)
+		script.
+			var user = {
+				'name': '#{user.name}',
+				'school_name': '#{user.school_name}',
+				'grade_name': '#{lesson.grade_name}',
+				'section_name': '#{user.section}'
+			};
+	- endif
+
+	- if (classmates && classmates.length >= 0)
+		script.
+			classmates = !{JSON.stringify(classmates)};
+	- endif	
+	- if (friends && friends.length >= 0)
+		script.
+			friends = !{JSON.stringify(friends)};
+	- endif
+
+	script.
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-68552555-1']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();

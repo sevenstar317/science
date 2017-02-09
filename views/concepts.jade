@@ -1,0 +1,131 @@
+extends layout
+
+block contentHead
+	link( href="/css/offcanvas.css", rel="stylesheet", media="screen" )
+	script( src="/js/offcanvas.js" )
+	script( src="/js/concepts.js" )
+
+block content
+	div.top-nav.container-fluid
+		div.row
+			nav
+				ul
+					li.nav-item
+						a(href="/")
+							i.nav-item-icon.nav-item-icon-home
+							span Home
+					li.nav-item
+						a(href="/myclass")
+							i.nav-item-icon.nav-item-icon-class
+							span My Class
+					li.nav-item
+						a.active(href="/lessons")
+							i.nav-item-icon.nav-item-icon-lessons
+							span Lessons
+					li.nav-item
+						a(href="/tests")
+							i.nav-item-icon.nav-item-icon-tests
+							span Tests
+
+	div.content-wrapper.container-fluid
+		div.row
+			div.sidebar-block
+				nav
+					ul
+						li.nav-item
+							a(href="/profile/view")
+								i.nav-item-icon.nav-item-icon-home
+								span Profile
+						li.nav-item
+							a(href="/myclass")
+								i.nav-item-icon.nav-item-icon-class
+								span My Class
+						li.nav-item
+							a.active(href="/lessons")
+								i.nav-item-icon.nav-item-icon-lessons
+								span Lessons
+							ul
+								- if (chapters)
+									- each chapter in chapters
+										li.nav-item
+											- if (chapter.id + ' ' == lesson.chapter + ' ') 
+												a.active(href="#" data-chapter-id="#{chapter.id}" onclick="onChapterChanged(event)" ) #{chapter.title}
+											- else
+												a(href="#" data-chapter-id="#{chapter.id}" onclick="onChapterChanged(event)" ) #{chapter.title}
+											- endif
+						li.nav-item
+							a(href="/tests")
+								i.nav-item-icon.nav-item-icon-tests
+								span Tests
+						li.nav-item
+							a(href="/signout")
+								i.nav-item-icon.nav-item-icon-logout
+								span Log Out
+
+			div.content-block
+				div.page-description
+					h1.page-title Lessons
+					h2.page-info
+				div.page-content.container-fluid
+					div.content-lessons
+						//div.visible-xs
+							button.btn.btn-primary.btn-xs( type="button", data-toggle="offcanvas" ) Chapters
+						
+						div#concepts
+							div.concept-group.clearfix
+							div.concept-content-group.hidden
+								div.concept-content-item
+								p.wait-mark.center
+									span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+									| &nbsp;&nbsp;Loading...
+		
+	
+	
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+	div#alert-modal.hidden
+				
+block contentScript
+	script.
+		var userid = '#{userid}';
+		var lesson = {
+			'isLesson': '#{lesson.isLesson}',
+			'syllabus_name': '#{lesson.syllabus_name}',
+			'syllabus': '#{lesson.syllabus}',
+			'grade_name': '#{lesson.grade_name}',
+			'grade': '#{lesson.grade}',
+			'chapter': '#{lesson.chapter}',
+			'concept': '#{lesson.concept}'
+		};
+		console.log('lesson');
+		console.log(lesson);
+	- if (user && user.school_name)
+		script.
+			var user = {
+				'name': '#{user.name}',
+				'school_name': '#{user.school_name}',
+				'grade_name': '#{lesson.grade_name}',
+				'section_name': '#{user.section}'
+			};
+	- endif
+
+	- if (classmates && classmates.length >= 0)
+		script.
+			classmates = !{JSON.stringify(classmates)};
+	- endif	
+	- if (friends && friends.length >= 0)
+		script.
+			friends = !{JSON.stringify(friends)};
+	- endif	
+
+	script.
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-68552555-1']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();

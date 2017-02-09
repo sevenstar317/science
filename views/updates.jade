@@ -1,0 +1,87 @@
+extends layout
+
+block contentHead
+	script( type="text/javascript" src="/js/updates.js" )
+
+block content
+	h2.text-muted Updates
+	div#updates.updates
+		div#not-found.margin-top-50.hidden
+			h4.text-muted.align-center No updates
+
+		div#show-bar
+			p#show-info.pull-left( style="margin:3px 0 0 0;" )
+			select#count-per-page.pull-right( onchange="changeCountPerPage()" )
+				option( value="10" ) 10
+				option( value="25" selected ) 25
+				option( value="50" ) 50
+				option( value="100" ) 100
+				option( value="-1" ) All
+			p.pull-right( style="margin:3px 5px 0 0;" ) Show:
+
+		div#page-btnset.btn-group.pull-right.margin-top-20
+			a.btn.btn-default.page-first( href="#" title="First Page" onclick="goToPage('first')" ) First
+			a.btn.btn-default.page-prev( href="#" title="Prev Page" onclick="goToPage('prev')" ) Prev
+			a.btn.btn-default.page-next( href="#" title="Next Page" onclick="goToPage('next')" ) Next
+			a.btn.btn-default.page-last( href="#" title="Last Page" onclick="goToPage('last')" ) Last
+
+	div.modal.fade#video-modal( tabindex="-1" role="dialog" aria-labelledby="Video" aria-hidden="true" )
+		div.modal-dialog
+			div.modal-content
+				div.modal-header
+					button.close( type="button" data-dismiss="modal" aria-hidden="true" ) &times;
+				div.modal-body
+	
+	div.modal.fade#note-modal( tabindex="-1" role="dialog" aria-labelledby="Note" aria-hidden="true" )
+		div.modal-dialog
+			div.modal-content
+				div.modal-header
+					button.close( type="button" data-dismiss="modal" aria-hidden="true" ) &times;
+				div.modal-body
+					p
+
+	div.modal.fade#profile-modal( tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true" )
+		div.modal-dialog
+			div.modal-content
+				div.modal-header
+					button.close( type="button" data-dismiss="modal" aria-hidden="true" ) &times;
+				div.modal-body
+					div.profile-view
+						div
+							p.profile-label Name
+							div.profile-content
+								p.update_name
+						div
+							p.profile-label Email
+							div.profile-content
+								p.update_email
+						div
+							p.profile-label School
+							div.profile-content
+								p.update_school_name
+								p.update_school_addr
+								p.update_school_city_country
+								p.update_school_postalcode
+						div
+							p.profile-label Grade
+							div.profile-content
+								p.update_grade
+						div
+							p.profile-label Section / Room
+							div.profile-content
+								p.update_section
+						div
+							p.profile-label Photo
+							div.profile-content
+								img.update_photo
+					div.report-block.margin-top-10.align-right
+						a( href="#" onclick="reportUser()" ) Not in Class
+						| or &nbsp;&nbsp;
+						a( href="#" onclick="reportUser()" ) Spammer
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+
+	div#alert-modal.hidden

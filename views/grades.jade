@@ -1,0 +1,80 @@
+extends layout
+
+block contentHead
+	script( src="/js/grades.js" )
+	script( src="/js/owl.carousel.min.js")
+	//link( href="/css/font-awesome.css", rel="stylesheet", media="screen" )
+
+block content
+	div.content-wrapper.container-fluid.home-background
+		div.row
+			div(style="height: 59px;")
+			img(class="logo-big img-responsive" src="/images/logo-big.png", alt="")
+			div#owl-syllabuses.syllabuses.owl-carousel.owl-theme
+				- if (syllabuses)
+					- var index = 1;
+					- each syllabus in syllabuses
+							div.syllabus.item
+									a.syllabus-link(href="#" data-syllabus="#{syllabus._id}")
+										//img.syllabus-image(src="#{syllabus.image}" alt="")
+										img.syllabus-image(src="/images/syllabuses/syllabus#{index}.jpg" alt="")
+										div.shadows
+										p.syllabus-title #{syllabus.title}
+							- index++
+					
+
+			div#grades.grades.container-fluid
+				div#grades-area.row
+					div.class-col.center
+						div.grade-item.disabled
+							a(href="#")
+								img(src="/images/grade-5.jpg" alt="")
+								div.shadows
+							p.grade-title 5th Grade
+					div.class-col.center
+						div.grade-item.disabled
+							a(href="#")
+								img(src="/images/grade-6.jpg" alt="")
+								div.shadows
+							p.grade-title 6th Grade
+					div.class-col.center
+						div.grade-item.disabled
+							a(href="#")
+								img(src="/images/grade-7.jpg" alt="")
+								div.shadows
+							p.grade-title 7th Grade
+					div.class-col.center
+						div.grade-item.disabled
+							a(href="#")
+								img(src="/images/grade-8.jpg" alt="")
+								div.shadows
+							p.grade-title 8th Grade
+					div.class-col.center
+						div.grade-item.disabled
+							a(href="#")
+								img(src="/images/grade-9.jpg" alt="")
+								div.shadows
+							p.grade-title 9th Grade
+					div.class-col.center
+						div.grade-item.disabled
+							a(href="#")
+								img(src="/images/grade-10.jpg" alt="")
+								div.shadows
+							p.grade-title 10th Grade
+					//- if (grades)
+						- grades.forEach( function(item){
+							div.col-xs-4.col-sm-2.col-lg-2.center
+								- if (!userid && item.enabled == 'false')
+									button.grade-item.item-disabled.disabled( type="button" ) #{item.grade}th Grade
+								- else
+									button.grade-item( type="button", onclick="$(location).attr('href', '/lessons?grade=#{item.id}')" ) #{item.grade}th Grade
+
+						- })
+block contentScript
+	script.
+			var global_userid = '#{userid}';
+			var guest = {
+				'name': '#{guest.name}',
+				'photo': '#{guest.photo}'
+			};
+

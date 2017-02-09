@@ -1,0 +1,62 @@
+extends layout
+
+block contentHead
+	script( type="text/javascript" src="/js/validator.min.js" )
+	script( type="text/javascript" src="/js/accountactivation.js" )
+
+block content
+	div#alert-block.form-350
+	div#unknown.hidden
+		div.col-sm-4.show-sm
+			img.pull-right( src="/images/warning.png" style="max-width:130px;margin-top:20px" )
+		div.col-sm-8
+			h2 Unknown activation link!
+			ul
+				li Please check your email again.
+				li 
+					p If you've lost email we sent, try resending your email.
+					form( data-toggle="validator" role="form" )
+						div.form-group( style="max-width:350px" )
+							input#email.form-control( type="email" placeholder="Registered email" name="email" data-error="Email address is invalid." required )
+							div.help-block.with-errors
+						button.btn.btn-primary( type="button" onclick="sendActLink()" ) Resend email
+	div#beforeSend.hidden
+		div.col-sm-4.show-sm
+			img.pull-right( src="/images/mailbox.png" style="max-width:170px;margin-top:10px" )
+		div.col-sm-8
+			h2 Your account was not activated!
+			ul
+				li You must click on the link in the email we just sent you in order to complete your registration.
+			h4.text-muted Never received the email?
+			ul
+				li Has it been less than 10 minutes? Hold tight - It sometimes just takes a bit.
+				li Check your junk or spam mail folder just in case.
+				li.
+					Try 
+					<a href="#" onclick="resendActivationEmail()">resending</a>
+					your email.
+
+	div#afterSend.hidden
+		div.col-sm-4.show-sm
+			img.pull-right( src="/images/mailbox.png" style="max-width:170px;margin-top:10px" )
+		div.col-sm-8
+			h2 Now, please check your email
+			ul
+				li You must click on the link in the email we just sent you in order to complete your registration.
+			h4.text-muted Never received the email?
+			ul
+				li Has it been less than 10 minutes? Hold tight - It sometimes just takes a bit.
+				li Check your junk or spam mail folder just in case.
+				li.
+					Try 
+					<a href="#" onclick="resendActivationEmail()">resending</a>
+					your email.
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			sapn.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbspPlease wait...
+
+block contentScript
+	script
+		| var userid = '#{activationId}';

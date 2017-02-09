@@ -1,0 +1,113 @@
+extends layout
+
+block contentHead
+	script( src="/js/jquery.easypiechart.min.js" )
+	script( src="/js/profile.js" )
+
+block content
+	div.top-nav.container-fluid
+		div.row
+			nav
+				ul
+					li.nav-item
+						a(href="/")
+							i.nav-item-icon.nav-item-icon-home
+							span Home
+					li.nav-item
+						a(href="/myclass")
+							i.nav-item-icon.nav-item-icon-class
+							span My Class
+					li.nav-item
+						a(href="/lessons")
+							i.nav-item-icon.nav-item-icon-lessons
+							span Lessons
+					li.nav-item
+						a(href="/tests")
+							i.nav-item-icon.nav-item-icon-tests
+							span Tests
+
+	div.content-wrapper.container-fluid
+		div.row
+			div.sidebar-block
+				nav
+					ul
+						li.nav-item
+							a.active(href="/profile/view")
+								i.nav-item-icon.nav-item-icon-home
+								span Profile
+						li.nav-item
+							a(href="/myclass")
+								i.nav-item-icon.nav-item-icon-class
+								span My Class
+						li.nav-item
+							a(href="/lessons")
+								i.nav-item-icon.nav-item-icon-lessons
+								span Lessons
+						li.nav-item
+							a(href="/tests")
+								i.nav-item-icon.nav-item-icon-tests
+								span Tests
+						li.nav-item
+							a(href="/signout")
+								i.nav-item-icon.nav-item-icon-logout
+								span Log Out
+
+			div.content-block
+				div.page-content.container-fluid
+					div.profile
+						div.profile-cover
+							a#profile-edit.btn.profile-cover-btn.btn-orange( href="/profile/edit" )
+								i.icon
+								| Edit Profile
+							div.profile-photo
+								- if (profile.photo == '')
+									img( src="/images/guest.png" )
+								- else
+									img( src="#{profile.photo}" )
+								- endif
+						p.profile-name #{profile.name}
+						div.profile-view.clearfix
+							div.profile-view-col
+								p.profile-info.profile-grade 
+									i.icon
+									| Grade #{profile.grade}
+								p.profile-info.profile-section 
+									i.icon
+									| Section #{profile.section}
+								p.profile-info.profile-percentage 
+									i.icon
+									| #{profile.percentage}%
+								p.profile-info.profile-classmates 
+									i.icon
+									| #{profile.classmates.length} Classmates 
+							div.profile-view-col
+								p.profile-info.profile-email 
+									i.icon
+									| #{profile.email}
+								p.profile-info.profile-schoolname 
+									i.icon
+									| #{profile.school_name}
+								p.profile-info.profile-syllabus 
+									i.icon
+									| #{profile.syllabus}
+								p.profile-info.profile-add-friends 
+									i.icon
+									a(href="/searchfriend") Add Friend
+							div.profile-view-col
+								//svg(width="115" height="115" class="chartsvg")
+									circle.pie(r="57" cx="57" cy="57" stroke="black" stroke-width="18" fill="red")
+								div.profile-percentage-chart
+									p You have completed
+									div.chart(data-percent=profile.percentage)
+										p.percentage #{profile.percentage}%
+									p of the #{profile.grade}th grade
+block contentScript
+	- if (user && user.school_name)
+		script.
+			var user = {
+				'name': '#{user.name}',
+				'school_name': '#{user.school_name}',
+				'grade_name': '#{lesson.grade_name}',
+				'section_name': '#{user.section}'
+			};
+	- endif

@@ -1,0 +1,124 @@
+.content-wrapper > .row {
+  height: 100%;
+}
+
+.sidebar-block{
+  float: left;
+  width: 23.83%;
+  background: $main-sidebar-bg;
+  height: 100%;
+
+  /*position: absolute;
+  left: 0;
+  bottom: 32px;
+  top: 128px;*/
+
+  ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li{
+    display: block;
+  }
+
+  .nav-item{
+    background: #ebeff3;
+
+    .nav-item {
+      padding: 0;
+      background: #f5f7f9;
+
+      a {
+        padding: 6px 32px;
+        font-size: 12px;
+      }
+    }
+
+    .nav-item-icon {
+      display: inline-block;
+      background: url('/images/sprite.png');
+      vertical-align: middle;
+
+      &-home{
+        width: 25px;
+        height: 22px;
+        background-position: -186px 0;
+      }
+
+      &-class{
+        width: 25px;
+        height: 15px;
+        background-position: -211px 0;
+      }
+
+      &-lessons{
+        width: 21px;
+        height: 21px;
+        background-position: -236px 0;
+      }
+
+      &-tests{
+        width: 24px;
+        height: 19px;
+        background-position: -257px 0;
+      }
+
+      &-logout{
+        width: 21px;
+        height: 22px;
+        background-position: -281px 0;
+      }
+    }
+
+    a{
+      font-size: 14px;
+      font-family: 'HelveticaNeueCyr-Light', sans-serif;
+      display: block;
+      padding: 15px 15px;
+      border-bottom: 1px solid $main-sidebar-menu-border;
+      color: #838383;
+
+      &.active{
+        text-decoration: none;
+        color: #ffffff;
+        border-bottom: 1px solid $main-sidebar-menu-active-border;
+        background: $main-sidebar-menu-bg-active;
+
+        .nav-item-icon {
+
+          &-home{
+            background-position: -302px 0;
+          }
+
+          &-class{
+            background-position: -327px 0;
+          }
+
+          &-lessons{
+            background-position: -352px 0;
+          }
+
+          &-tests{
+            background-position: -373px 0;
+          }
+
+          &-logout{
+            background-position: -397px 0;
+          }
+        }
+      }
+
+      &:hover span{
+        text-decoration: underline;
+      }
+
+      span{
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 20px;
+      }
+    }
+  }
+}

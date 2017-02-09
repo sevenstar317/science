@@ -1,0 +1,52 @@
+extends layout
+
+block contentHead
+	script( type="text/javascript" src="/js/admin-pagenation.js" )
+
+block content
+	div.content-header.inline-block.full-width
+		h3.pull-left Usage Logs
+
+	div#show-bar
+		p#show-info.pull-left( style="margin:3px 0 0 0;" )
+		select#count-per-page.pull-right( onchange="changeCountPerPage()" )
+			option( value="10" ) 10
+			option( value="25" selected ) 25
+			option( value="50" ) 50
+			option( value="100" ) 100
+			option( value="-1" ) All
+		p.pull-right( style="margin:3px 5px 0 0;" ) Show:
+
+	div.content-table
+		table.table.table-hover
+			colgroup
+				col
+				col
+				col( width="150" )
+			thead
+				tr.headings
+					th
+						span No
+					th
+						span Log
+					th
+						span Date
+			tbody
+				- var totalCount = 0
+				- if (logs)
+					- totalCount = logs.length
+					- logs.forEach( function(item, index){
+						tr( id="item-#{index + 1}" )
+							td #{index + 1}
+							td #{item.log}
+							td #{item.date}
+					- })
+
+	div#page-btnset.btn-group.pull-right.margin-top-20
+			a.btn.btn-default.page-first( href="#" title="First Page" onclick="goToPage('first')" ) First
+			a.btn.btn-default.page-prev( href="#" title="Prev Page" onclick="goToPage('prev')" ) Prev
+			a.btn.btn-default.page-next( href="#" title="Next Page" onclick="goToPage('next')" ) Next
+			a.btn.btn-default.page-last( href="#" title="Last Page" onclick="goToPage('last')" ) Last
+
+	script.
+		var totalCount = #{totalCount};

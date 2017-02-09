@@ -1,0 +1,140 @@
+extends layout
+
+block contentHead
+	link( href="/css/offcanvas.css", rel="stylesheet", media="screen" )
+	script( src="/js/offcanvas.js" )
+	script( src="/js/concepts.js" )
+
+block content
+	div.pull-right.margin-top-20
+		a#show-concepts.btn.btn-default.hidden( href="#" onclick="showConcepts()" style="margin-right:10px" ) Back
+		a.btn.btn-default.hidden( href="/contents" ) Contents
+	div.row.row-offcanvas.row-offcanvas-left
+		div.margin-left-10
+			div.margin-top-20.margin-bottom-20
+				h3.chapter-heading.body-color Chapter
+				select#chapters-list.form-control( onchange="onChapterChanged(this)" style="max-width:56%" )
+					- if (chapters)
+						- each chapter in chapters
+							- if (chapter.id + ' ' == lesson.chapter + ' ') 
+								option( value="#{chapter.id}" selected) #{chapter.title}
+							- else
+								option( value="#{chapter.id}" ) #{chapter.title}
+							- endif
+			div.visible-xs
+				button.btn.btn-primary.btn-xs( type="button", data-toggle="offcanvas" ) Chapters
+		div.col-xs-12.col-sm-8.concepts
+			div#concepts
+				div.concept-group
+					div.one-column
+						div.column.column-1
+					div.two-columns
+						div.column.column-1
+						div.column.column-2
+					div.three-columns
+						div.column.column-1
+						div.column.column-2
+						div.column.column-3
+				div.concept-content-group.hidden
+					div.concept-content-item
+					p.wait-mark.center
+						span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+						| &nbsp;&nbsp;Loading...
+		div.col-xs-12.col-sm-4
+			div#class-group.user-group
+				h4.body-color Classmates
+				div#guest-comment
+					p You have not enrolled in any class.
+					p
+						a(href="/signin") Sign in
+						&nbsp or &nbsp
+						a(href="/signup") Sign up for Free
+				div#user-classmates
+					p#class-info School Name: My School <br> 7th Grade, Section C
+					div.classmate-sm-item.center
+						a(href="/searchfriend")
+							img.user-sm-photo(src="/images/add.png" style="margin: 0 auto;")
+							p Add Friend
+					p#none-classmate None of your classmates are here yet.
+				- if (userid)
+					div( align="right" )
+						a#classmates-expand.more-data( onclick="onMoreClassmates()" ) More
+			div#friend-group.user-group
+				h4.body-color Other Friends
+				div#user-friends
+				div( align="right" )
+					a#friends-expand.more-data( onclick="onMoreFriends()" ) More
+	
+	div.modal.fade#user-modal( tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true" )
+		div.modal-dialog
+			div.modal-content
+				div.modal-header
+					p.pull-left(style="font-size:18px;margin-top: -10px" ) Profile 
+					button.close( type="button" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;") &times;
+				div.modal-body
+					div.classmate-profile
+						img.user-photo( src="/images/guest.png" )
+						div.second-info
+							p.name UserName
+							p.school-name School Name
+							p.location Location
+							p.grade-section Grade and Section
+							p.email email
+							p.update-label.pull-left Receive Updates
+							div.on-off-btnset
+								- if ('true' == 'true')
+									button.btn.btn-success( type="button" onclick="updateOnOff(0)" ) ON
+									button.btn.btn-default( type="button" onclick="updateOnOff(1)" style="display:none" ) OFF
+								- else
+									button.btn.btn-success( type="button" onclick="updateOnOff(0)" style="display:none" ) ON
+									button.btn.btn-default( type="button" onclick="updateOnOff(1)" ) OFF
+								- endif
+							div.margin-top-10
+								a#report-user( href="#" onclick="showReportOption(true)" ) Report
+								div#report-options.hidden
+									label( onclick="selectReportOption('Not in Class')" )
+										input#report-not-in-class( type="radio" name="option" )
+										| Not in Class
+									label( onclick="selectReportOption('Other')" )
+										input#report-other( type="radio" name="option" )
+										| Other
+									textarea.form-control
+									div.btn-toolbar.margin-top-10
+										button.btn.btn-success( type="button" onclick="reportUser()" ) Submit
+										button.btn.btn-default( type="button" onclick="showReportOption(false)" ) Cancel
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+	div#alert-modal.hidden
+				
+block contentScript
+	script.
+		var userid = '#{userid}';
+		var lesson = {
+			'isLesson': '#{lesson.isLesson}',
+			'syllabus_name': '#{lesson.syllabus_name}',
+			'syllabus': '#{lesson.syllabus}',
+			'grade_name': '#{lesson.grade_name}',
+			'grade': '#{lesson.grade}',
+			'chapter': '#{lesson.chapter}',
+			'concept': '#{lesson.concept}'
+		};
+	- if (user && user.school_name)
+		script.
+			var user = {
+				'name': '#{user.name}',
+				'school_name': '#{user.school_name}',
+				'grade_name': '#{lesson.grade_name}',
+				'section_name': '#{user.section}'
+			};
+	- endif
+
+	- if (classmates && classmates.length >= 0)
+		script.
+			classmates = !{JSON.stringify(classmates)};
+	- endif	
+	- if (friends && friends.length >= 0)
+		script.
+			friends = !{JSON.stringify(friends)};
+	- endif	

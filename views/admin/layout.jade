@@ -1,0 +1,76 @@
+doctype html
+html( lang="en" )
+	head
+		meta( charset = "UTF-8" )
+		meta( name="viewport", content="width=device-width, initial-scale=1.0, user-scalable=no" )
+		title ScienceIsFun
+		link( rel="shortcut icon" href="/images/fluidicon.gif" )
+		link( href="/css/bootstrap.min.css", rel="stylesheet", media="screen" )
+		link( href="/css/style.css", rel="stylesheet", media="screen" )
+		script( src="/js/jquery-2.0.3.min.js" )
+		script( src="/js/bootstrap.min.js" )
+		block contentHead
+	body
+		div.navbar.navbar-inverse.top-menu( role="navigation" )
+			div.container
+				div.navbar-header
+					a( href="/admin" )
+						div.logo-sm-block
+							img( src="/images/logo2.png" )
+							p Science Is Fun
+					- if (admin == 'true')
+						button.navbar-toggle( type="button", data-toggle="collapse", data-target="#navbar-menu" )
+							span.sr-only Toggle Navigation
+							span.icon-bar
+							span.icon-bar
+							span.icon-bar
+					- endif
+				- if (admin == 'true')
+					div#navbar-menu.collapse.navbar-collapse
+						ul.nav.navbar-nav.navbar-right
+							li
+								a.dropdown-toggle( href="#" data-toggle="dropdown" ) Contents
+								ul.dropdown-menu( role="menu" )
+									li
+										a( href="/admin/discussions" ) Manage Discussions
+									li
+										a( href="/admin/syllabuses" ) Manage Syllabuses
+									li
+										a( href="/admin/grades" ) Manage Grades
+									li
+										a( href="/admin/chapters" ) Manage Chapters
+									li
+										a( href="/admin/concepts" ) Manage Concepts
+									li
+										a( href="/admin/tests" ) Manage Tests
+									li
+										a( href="/admin/contents/search" ) Search Contents
+									li
+										a( href="/admin/contents/import" ) Import Contents
+									li
+										a( href="/admin/contents/export" ) Export Contents
+									li
+										a( href="/admin/tests/import-tests" ) Import Tests
+									li
+										a( href="/admin/tests/export-tests" ) Export Tests
+							li
+								a.dropdown-toggle( href="#" data-toggle="dropdown" ) Reporting
+								ul.dropdown-menu( role="menu" )
+									li
+										a( href="/admin/users" ) Users
+									li
+										a( href="/admin/users/manage" ) Manage Users
+									li
+										a( href="/admin/reports" ) Reports
+									//li
+									//	a( href="/admin/logs" ) Usage Logs
+							li
+								a( href="/admin/monitoring" ) Monitoring
+							li
+								a( href="/admin/logout" ) Log out
+				- endif
+		div.main.container.admin-container
+			block content
+		div.footer.container.admin-footer
+			div.pull-left.full-width.center &copy; 2014 scienceisfun.in
+		block contentScript

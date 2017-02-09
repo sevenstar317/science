@@ -1,0 +1,202 @@
+html, body{
+  height: 100%;
+}
+
+body{
+  font-family: 'HelveticaNeueCyr-Medium';
+}
+
+#wrapper{
+  max-width: $container-width;
+  margin: 0 auto;
+  //height: 100%;
+}
+
+.navbar{
+  height: $navbar-height;
+}
+
+.form-control{
+  border-color: #d7d7d7;
+  height: 40px;
+  padding: 6px 13px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+
+  @include border-radius(3px);
+  @include box-shadow(none);
+
+  @include input-placeholder{
+    color: #c1c1c1;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+  }
+}
+
+.btn{
+  border: 1px solid #4e96ff;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 15px;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: 'HelveticaNeueCyr-Light', sans-serif;
+
+  @include border-radius(3px);
+  @include background-image(linear-gradient(#60b4ff, #53a8ff));
+  @include box-shadow(1px 1px 3px rgba(#000000, 0.4), inset 1px 1px 0 #7ec5ff);
+
+  &:hover, &:focus{
+    border: 1px solid #4e96ff;
+    color: #ffffff;
+
+    @include background-image(linear-gradient(#53a8ff, #60b4ff));
+  }
+
+  &-success{
+    border: 1px solid #00a718;
+
+    @include background-image(linear-gradient(#00d222, #00ca1b));
+    @include box-shadow(1px 1px 3px rgba(#000000, 0.4), inset 1px 1px 0 #7eff84);
+
+    &:hover, &:focus{
+      border: 1px solid #00a718;
+      color: #ffffff;
+
+      @include background-image(linear-gradient(#00ca1b, #00d222));
+    }
+  }
+
+  &-danger{
+    border: 1px solid #ff4e4e;
+
+    @include background-image(linear-gradient(#ff6464, #ff5757));
+    @include box-shadow(1px 1px 3px rgba(#000000, 0.4), inset 1px 1px 0 #ff7e7e);
+
+    &:hover, &:focus{
+      border: 1px solid #ff4e4e;
+      color: #ffffff;
+
+      @include background-image(linear-gradient(#ff5757, #ff6464));
+    }
+  }
+
+  &-info{
+    border: 1px solid #4e96ff;
+
+    @include background-image(linear-gradient(#64b8ff, #57adff));
+    @include box-shadow(1px 1px 3px rgba(#000000, 0.4), inset 1px 1px 0 #7ec5ff);
+
+    &:hover, &:focus{
+      border: 1px solid #4e96ff;
+      color: #ffffff;
+
+      @include background-image(linear-gradient(#57adff, #64b8ff));
+    }
+  }
+
+  &-orange2{
+    border: 1px solid #ff8c4e;
+
+    @include background-image(linear-gradient(#f68722, #f4781b));
+    @include box-shadow(1px 1px 3px rgba(#000000, 0.4), inset 1px 1px 0 #ffac7e);
+
+    &:hover, &:focus{
+      border: 1px solid #ff8c4e;
+      color: #ffffff;
+
+      @include background-image(linear-gradient(#f4781b, #f68722));
+    }
+  }
+
+  &-orange{
+    border: none;
+    background: #f68923;
+
+    @include box-shadow(none);
+
+    &:hover, &:focus{
+      border: none;
+      background: #f49041;
+    }
+  }
+}
+
+.btn-lg {
+  font-size: 20px;
+  line-height: 52px;
+  height: 52px;
+}
+
+@media (min-width: 1200px){
+  .container {
+    width: $container-width;
+  }
+}
+
+.glyphicon-refresh-animate {
+  -animation: spin .7s infinite linear;
+  -webkit-animation: spin2 .7s infinite linear;
+}
+
+
+
+@-webkit-keyframes spin2 {
+  from { -webkit-transform: rotate(0deg);}
+  to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+  from { transform: scale(1) rotate(0deg);}
+  to { transform: scale(1) rotate(360deg);}
+}
+
+#wait {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  z-index:99999;
+}
+
+#wait .wait-mark {
+  position: relative;
+  top: calc(40%);
+  padding: 10px;
+  font-size: 18px;
+}
+
+#alert-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  font-size: 16px;
+  display: inline-block;
+  z-index:9999 !important;
+  font-family: 'HelveticaNeueCyr-Light', sans-serif;
+
+  @include transform(translateX(-50%) translateY(-50%));
+
+  .alert.alert-danger {
+    color: #fff;
+    border: 1px solid #ff4e4e;
+
+    @include background-image(linear-gradient(#ff6464, #ff6464));
+    @include box-shadow(1px 1px 3px rgba(#000000, 0.4));
+  }
+
+  .alert.alert-success {
+    color: #fff;
+    border: 1px solid #00a718;
+
+    @include background-image(linear-gradient(#00d222, #00d222));
+    @include box-shadow(1px 1px 3px rgba(#000000, 0.4));
+  }
+}
+
+#alert-modal .alert-dismissable {
+  padding-right:15px;
+}

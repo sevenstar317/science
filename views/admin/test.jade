@@ -1,0 +1,131 @@
+extends layout
+
+block contentHead
+	link( href="/css/fileinput.min.css", rel="stylesheet", media="screen" )
+	script( type="text/javascript" src="/js/fileinput.min.js" )
+	script( type="text/javascript" src="/js/validator.min.js" )
+	script( type="text/javascript" src="/js/admin-test.js" )
+
+block content
+	form
+		div.content-header.inline-block.full-width
+			- if (test.id == '')
+				h3.pull-left Add Question
+			- else
+				h3.pull-left Edit Question
+			- endif
+			button.btn.btn-default.pull-right( type="button" onclick="save()" ) Save
+			- if (test.id != '')
+				button.btn.btn-default.pull-right.margin-right-10( type="button" onclick="deleteTest()" ) Delete
+			a.btn.btn-default.btn-back.pull-right( href="/admin/tests" ) < Back
+		div#alert-block
+		div.content-body
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Question
+				input.form-control.edit-field( type="text" name="question" value="#{test.question}" required)
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Option 1
+				input.form-control.edit-field( type="text" name="option1" value="#{test.option1}" required)
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Option 2
+				input.form-control.edit-field( type="text" name="option2" value="#{test.option2}" required)
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Option 3
+				input.form-control.edit-field( type="text" name="option3" value="#{test.option3}" required)
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Option 4
+				input.form-control.edit-field( type="text" name="option4" value="#{test.option4}" required)
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Correct answer
+				select.form-control.edit-field( name="answer")
+					option(value="option1") Option 1
+					option(value="option2") Option 2
+					option(value="option3") Option 3
+					option(value="option4") Option 4
+				
+				p#pretext.hidden #{test.text}
+			
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Enable
+				- if (test.enabled == 'true')
+					input#enable( type="checkbox" name="enable" checked )
+				- else
+					input#enable( type="checkbox" name="enable" )
+				- endif
+			div
+				p.edit-field-label Links
+				- if (links)
+					- var index = 0
+					- each link in links
+						- index++
+						div.edit-link-block
+							div.pull-left.margin-right-30
+								p.edit-link-label.pull-left Syllabus
+								select.form-control.edit-link-select( id="syllabus_#{index}" index="#{index}" name="syllabuses" onchange="loadGrade(this)" )
+									- if (syllabuses)
+										- each syllabus in syllabuses
+											- if (link.linkInfo.syllabus + ' ' == syllabus._id + ' ') 
+												option( value="#{syllabus._id}" selected) #{syllabus.title}
+											- else
+												option( value="#{syllabus._id}" ) #{syllabus.title}
+											- endif
+							div.form-group.pull-left.margin-right-30
+								p.edit-link-label.pull-left Grade
+								select.form-control.edit-link-select( id="grade_#{index}" name="grades" onchange="loadChapter($(syllabus_#{index}), this)" )
+									- if (link.exGrades)
+										- each exGrade in link.exGrades
+											- if (link.linkInfo.grade + ' '== exGrade.grade_id + ' ')
+												option( value="#{exGrade.grade_id}" selected) #{exGrade.grade_title}
+											- else
+												option( value="#{exGrade.grade_id}") #{exGrade.grade_title}
+											- endif
+							div.form-group.pull-left.margin-right-30
+								p.edit-link-label.pull-left Chapter
+								select.form-control.edit-link-select( id="chapter_#{index}" name="chapters"  onchange="loadConcept($(syllabus_#{index}), $(grade_#{index}), this)" )
+									- if (link.exChapters)
+										- each exChapter in link.exChapters
+											- if (link.linkInfo.chapter + ' '== exChapter.chapter_id + ' ')
+												option( value="#{exChapter.chapter_id}" selected) #{exChapter.chapter_title}
+											- else
+												option( value="#{exChapter.chapter_id}") #{exChapter.chapter_title}
+											- endif
+							div.form-group.pull-left.margin-right-30
+								p.edit-link-label.pull-left Concept
+								select.form-control.edit-link-select( id="concept_#{index}" name="concepts"  onchange="loadOrder($(syllabus_#{index}), $(grade_#{index}), $(chapter_#{index}), this)" )
+									- if (link.exConcepts)
+										- each exConcept in link.exConcepts
+											- if (link.linkInfo.concept + ' '== exConcept.concept_id + ' ')
+												option( value="#{exConcept.concept_id}" selected) #{exConcept.concept_title}
+											- else
+												option( value="#{exConcept.concept_id}") #{exConcept.concept_title}
+											- endif
+							div.form-group.pull-left.margin-right-30
+								p.edit-link-label.pull-left Order
+								select.form-control.edit-link-select( id="order_#{index}" name="orders" )
+									option( value="1" ) First
+										- if (link.exTests)
+											- each exTest in link.exTests
+												- if (link.linkInfo.order == exTest.order + 1)
+													option( value="#{exTest.order + 1}" selected) After #{exTest.test_title}
+												- else
+													option( value="#{exTest.order + 1}") After #{exTest.test_title}
+												- endif
+							button.btn.btn-default.pull-right.glyphicon.glyphicon-minus( type="button" onclick="removeLink(this)" )
+				div.edit-link-block
+					button.btn.btn-default.pull-right.glyphicon.glyphicon-plus( type="button" onclick="addLink(this)" )
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			sapn.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+
+	script.
+		var test_id = '#{test.id}';
+		var test_concept = '#{test.concept}';
+		var test_order = '#{test.order}';
+	
+	- if (syllabuses && syllabuses.length >= 0)
+		script.
+			syllabuses = !{JSON.stringify(syllabuses)};
+	- endif
+

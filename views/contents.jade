@@ -1,0 +1,76 @@
+extends layout
+
+block contentHead
+	link( href="/css/offcanvas.css", rel="stylesheet", media="screen" )
+	script( src="/js/offcanvas.js" )
+	script( src="/js/validator.min.js" )
+	script( src="/js/contents.js" )
+
+block content
+	div.pull-right.margin-top-20
+		a.btn.btn-default( href="/lastlesson" ) Lessons
+	h2 Contents
+	div.row.row-offcanvas.row-offcanvas-left
+		div.col-xs-12.col-sm-3.sidebar-offcanvas#chapterbar( role="navigation" )
+			div#chapters.list-group
+				-if (chapters)
+					- chapters.forEach(function(chapter){
+						a.list-group-item( href="/contents?chapter=#{chapter.id}" id="chapter-#{chapter.id}" data-chapter-id="#{chapter.id}" ) #{chapter.title}
+					- })
+		div.col-xs-12.col-sm-9
+			div.visible-xs
+				button.btn.btn-primary.btn-xs( type="button", data-toggle="offcanvas" ) Chapters
+			div.content-repository
+				ul.nav.nav-tabs
+					li( class="#{video_active}" )
+						a( href="#content-videos", data-toggle="tab" onclick="changeContentTab('video')" ) Videos
+					li( class="#{note_active}" )
+						a( href="#content-notes", data-toggle="tab" onclick="changeContentTab('note')" ) Class Discussions
+					li( class="#{reference_active}" )
+						a( href="#content-references", data-toggle="tab" onclick="changeContentTab('reference')" ) References
+				div.tab-content
+					div#content-videos.tab-pane.fade.in( class="#{video_active}" )
+					div#content-notes.tab-pane.fade.in( class="#{note_active}" )
+					div#content-references.tab-pane.fade.in( class="#{reference_active}" )
+
+	div.modal.fade#video-modal( tabindex="-1" role="dialog" aria-labelledby="Video" aria-hidden="true" )
+		div.modal-dialog
+			div.modal-content
+				div.modal-header
+					button.close( type="button" data-dismiss="modal" aria-hidden="true" ) &times;
+				div.modal-body
+
+	div.modal.fade#video-add-modal( tabindex="-1" role="dialog" aria-labelledby="Video" aria-hidden="true"  data-backdrop="static" )
+		div.modal-dialog
+			div.modal-content
+				div.modal-header
+					button.close( type="button" data-dismiss="modal" aria-hidden="true" ) &times;
+				div.modal-body
+					form#video-add-form( data-toggle="validator" role="form" )
+						div.reference-add.form-group.full-width.inline-block
+							input.form-control( type="text" data-private="false" required )
+							div.pull-right
+								button.btn.btn-default.public( type="button" onclick="setPrivateVideo()" )
+									img( src="/images/public.png" )
+								button.btn.btn-default.btn-note-add( type="button" onclick="addVideo()" ) Add Video
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+	div#alert-modal.hidden
+
+block contentScript
+	script.
+		var userid = '#{userid}';
+		var lesson = {
+			'isLesson': '#{lesson.isLesson}',
+			'syllabus_name': '#{lesson.syllabus_name}',
+			'syllabus': '#{lesson.syllabus}',
+			'grade_name': '#{lesson.grade_name}',
+			'grade': '#{lesson.grade}',
+			'chapter': '#{lesson.chapter}',
+			'concept': '#{lesson.concept}',
+			'contents': '#{lesson.contents}'
+		};
+

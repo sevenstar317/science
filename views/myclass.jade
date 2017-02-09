@@ -1,0 +1,262 @@
+extends layout
+
+block contentHead
+	link( href="/css/offcanvas.css", rel="stylesheet", media="screen" )
+	script( src="/js/offcanvas.js" )
+	script( src="/js/myclass.js" )
+	script( src="/js/discussions.js" )
+	script( src="/js/social-share.js" )
+	//script(src='https://apis.google.com/js/platform.js', async='', defer='')
+	script(src="https://apis.google.com/js/platform.js", async="", defer="")
+	script(src="http://connect.facebook.net/en_US/all.js")
+	//script
+		window.___gcfg = {lang: 'en-US',parsetags: 'onload'};
+
+block content
+	div.top-nav.container-fluid
+		div.row
+			nav
+				ul
+					li.nav-item
+						a(href="/")
+							i.nav-item-icon.nav-item-icon-home
+							span Home
+					li.nav-item
+						a.active(href="/myclass")
+							i.nav-item-icon.nav-item-icon-class
+							span My Class
+					li.nav-item
+						a(href="/lessons")
+							i.nav-item-icon.nav-item-icon-lessons
+							span Lessons
+					li.nav-item
+						a(href="/tests")
+							i.nav-item-icon.nav-item-icon-tests
+							span Tests
+
+	div.content-wrapper.container-fluid
+		div.row
+			div.sidebar-block
+				nav
+					ul
+						li.nav-item
+							a(href="/profile/view")
+								i.nav-item-icon.nav-item-icon-home
+								span Profile
+						li.nav-item
+							a.active(href="/myclass")
+								i.nav-item-icon.nav-item-icon-class
+								span My Class
+						li.nav-item
+							a(href="/lessons")
+								i.nav-item-icon.nav-item-icon-lessons
+								span Lessons
+						li.nav-item
+							a(href="/tests")
+								i.nav-item-icon.nav-item-icon-tests
+								span Tests
+						li.nav-item
+							a(href="/signout")
+								i.nav-item-icon.nav-item-icon-logout
+								span Log Out
+
+			div.content-block
+				div.page-description
+					h1.page-title My Class
+					- if (user)
+						h2.page-info=user.school_name
+					- else
+						h2.page-info
+				div.page-content.container-fluid
+					div.content
+						h3.text-center.content-title Class Discussions
+						div.select-chapter
+							p Select Chapter
+							select#discussion-chapter.form-control
+								option(value="all") All discussions
+								option(value="general") General Discussion
+								each chapter in chapters
+									option(value=chapter.id)=chapter.title
+						div.discussions-options
+							label(for="discussion-search-text")
+								input#discussion-search-text.form-control(type="text" placeholder="Search")
+								a#discussion-search(href="#")
+							select#discussion-sort-answers.form-control
+								option(value="all") All
+								option(value="unanswered") Unanswered
+							select#discussion-sort-by.form-control
+								option(value="recent") Recent
+								option(value="popular") Most popular
+							a#discussion-create(href="#").btn
+								i.icon
+								span New Topic
+							input#discussion-limit(hidden type="text" value="10")
+							input#discussion-skip(hidden type="text" value="1")
+						div#discussions-block
+							- if (resDiscussions)
+								each resDiscussion in resDiscussions
+									div.discussion-item(data-discussion-id=resDiscussion._id)
+										a.title(href='/discussion/' + resDiscussion._id)=resDiscussion.title
+										div.info
+											- if (user.id == resDiscussion.user._id)
+												a.owner(href="/profile/view")=resDiscussion.user.name
+											- else
+												a.owner(href="#" onclick='viewUserById(\'' + resDiscussion.user._id.toString() + '\')')=resDiscussion.user.name
+											p.date=fromNow(resDiscussion.date)
+											p.chapter=resDiscussion.chapter.title
+											a.replies(href='/discussion/' + resDiscussion._id + '#responses')=resDiscussion.responsesCount + ' replies'
+								- if (resDiscussions.length >= 10)
+									a.btn.btn-default.loadmore(href="#") Load More Posts
+							- else
+								p Discussions not found
+							- if (!user)
+								div.guest-note.note-item.full-width.inline-block.margin-top-10
+									p.note-content You have note enrolled in any class.
+									p.note-content To join the class discussion,
+										a(href="/signin") Sign in
+										&nbsp; or &nbsp;
+										a(href="/signup") Sign up for Free
+					div.sidebar
+						div.sidebar-section
+							h2.title Classmates
+							- if (!user)
+								div#guest-comment
+									p You have not enrolled in any class.
+									p
+										a(href="/signin") Sign in
+										&nbsp or &nbsp
+										a(href="/signup") Sign up for Free
+							div#user-classmates.classmates
+								div.classmate-sm-item.center
+									a(href="/searchfriend")
+										img.user-sm-photo(src="/images/add.png" style="margin: 0 auto;")
+										p Add Friend
+								p#none-classmate None of your classmates are here yet.
+							- if (userid)
+								div( align="right" )
+									a#classmates-expand.more-data( onclick="onMoreClassmates()" ) More
+						- if (user)
+							div.sidebar-section
+								h2.title Other Friends
+								div#friend-group.user-group
+									div#user-friends.clearfix
+									div#socialfriend
+									span#google-share
+
+									div( align="right" )
+										a#friends-expand.more-data( onclick="onMoreFriends()" ) More
+
+
+
+
+
+
+			div.modal.fade#discussion-modal( tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true" )
+				div.modal-dialog
+					div.modal-content
+						div.modal-header
+							p.pull-left(style="font-size:18px;margin-top: -10px" ) New Discussion Topic
+							button.close( type="button" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;") &times;
+						div.modal-body
+							input.discussion-title.form-control(type="text" placeholder="Title" required)
+							textarea.discussion-text.form-control(placeholder="Description" required)
+							select.discussion-chapter.form-control
+								option(value="general") General Discussion
+								each chapter in chapters
+									option(value=chapter.id)=chapter.title
+							button.discussion-create.btn Create
+
+			div.modal.fade#user-modal( tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true" )
+				div.modal-dialog
+					div.modal-content
+						div.modal-header
+							p.pull-left(style="font-size:18px;margin-top: -10px" ) Profile 
+							button.close( type="button" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;") &times;
+						div.modal-body
+							div.classmate-profile
+								img.user-photo( src="/images/guest.png" )
+								div.second-info
+									p.name UserName
+									p.school-name School Name
+									p.location Location
+									p.grade-section Grade and Section
+									p.email email
+								div.on-off-btnset.pull-right
+									- if ('true' == 'true')
+										button.btn.btn-success( type="button" onclick="updateOnOff(0)" ) ON
+										button.btn.btn-default( type="button" onclick="updateOnOff(1)" style="display:none" ) OFF
+									- else
+										button.btn.btn-success( type="button" onclick="updateOnOff(0)" style="display:none" ) ON
+										button.btn.btn-default( type="button" onclick="updateOnOff(1)" ) OFF
+									- endif
+								p.update-label.pull-right Receive Updates	
+								div.margin-top-10
+									a#report-user( href="#" onclick="showReportOption(true)" ) Report
+									div#report-options.hidden
+										label( onclick="selectReportOption('Not in Class')" )
+											input#report-not-in-class( type="radio" name="option" )
+											| Not in Class
+										label( onclick="selectReportOption('Bad Content')" )
+											input#report-bad-content( type="radio" name="option" )
+											| Bad Content
+										label( onclick="selectReportOption('Other')" )
+											input#report-other( type="radio" name="option" )
+											| Other
+										textarea.form-control
+										div.btn-toolbar.margin-top-10
+											button.btn.btn-success( type="button" onclick="reportUser()" ) Submit
+											button.btn.btn-default( type="button" data-dismiss="modal" ) Cancel		
+			
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+	div#alert-modal.hidden
+	
+	
+				
+block contentScript
+	script.
+		var userid = '#{userid}';
+		var lesson = {
+			'isLesson': '#{lesson.isLesson}',
+			'syllabus_name': '#{lesson.syllabus_name}',
+			'syllabus': '#{lesson.syllabus}',
+			'grade_name': '#{lesson.grade_name}',
+			'grade': '#{lesson.grade}',
+			'chapter': '#{lesson.chapter}',
+			'concept': '#{lesson.concept}'
+		};
+	- if (user && user.school_name)
+		script.
+			var user = {
+				'name': '#{user.name}',
+				'school_name': '#{user.school_name}',
+				'grade_name': '#{lesson.grade_name}',
+				'section_name': '#{user.section}'
+			};
+	- endif
+
+	- if (classmates && classmates.length >= 0)
+		script.
+			classmates = !{JSON.stringify(classmates)};
+	- endif	
+	- if (friends && friends.length >= 0)
+		script.
+			friends = !{JSON.stringify(friends)};
+	- endif	
+	
+	script.
+		FB.init({appId:'664262100315335',cookie:true,status:true,xfbml:true});
+	script.
+		function FBInvite(){FB.ui({method: 'apprequests',title:'Science Is Fun',message: 'Join me in an exciting world where text books come to life, and learning ‘Science is Fun'},function(response) {if (response) {} else {}});}
+	
+	script.
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-68552555-1']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();

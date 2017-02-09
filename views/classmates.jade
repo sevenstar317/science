@@ -1,0 +1,87 @@
+extends layout
+
+block contentHead
+	script( type="text/javascript" src="/js/classmates.js" )
+
+
+block content
+	h2.text-muted My Classmates
+	div.col-sm-8.classmate-search.input-group
+		input#search.form-control.form-search( type="text" placeholder="Search by Name or Email" name="search" )
+		div.input-group-btn
+			button.btn.btn-default.glyphicon.glyphicon-search( type="button" onclick="searchFriend()" )
+	
+	div#loading.align-center
+		p.wait-mark
+			span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Loading...
+		h4.none-text.text-muted.hidden You don't have any classmates / friends listed.
+
+	div#not-found.hidden
+		h4.text-muted Did Not Found
+
+	div.classmates-block
+		div#classmates.classmates-group.inline-block.hidden
+			p.grade Classmates
+			div.classmates
+
+		div#grademates.classmates-group.inline-block.hidden
+			p.grade Grademates
+			div.classmates
+
+		div#friends.classmates-group.inline-block.hidden
+			p.grade Friends
+			div.classmates
+		
+		div#social-friends.classmates-group.inline-block.hidden
+			p.grade Friends
+			div.classmates
+
+		div#search-result.classmates-group.inline-block.hidden
+			div.classmates
+
+	div.modal.fade#user-modal( tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true" )
+		div.modal-dialog
+			div.modal-content
+				div.modal-header
+					p.pull-left(style="font-size:18px;margin-top: -10px" ) Profile 
+					button.close( type="button" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;") &times;
+				div.modal-body
+					div.classmate-profile
+						img.user-photo( src="/images/guest.png" )
+						div.second-info
+							p.name UserName
+							p.school-name School Name
+							p.location Location
+							p.grade-section Grade and Section
+							p.email email
+							p.update-label.pull-left Receive Updates
+							div.on-off-btnset
+								- if ('true' == 'true')
+									button.btn.btn-success( type="button" onclick="updateOnOff(0)" ) ON
+									button.btn.btn-default( type="button" onclick="updateOnOff(1)" style="display:none" ) OFF
+								- else
+									button.btn.btn-success( type="button" onclick="updateOnOff(0)" style="display:none" ) ON
+									button.btn.btn-default( type="button" onclick="updateOnOff(1)" ) OFF
+								- endif
+							div.margin-top-10
+								a#report-user( href="#" onclick="showReportOption(true)" ) Report
+								div#report-options.hidden
+									label( onclick="selectReportOption('Not in Class')" )
+										input#report-not-in-class( type="radio" name="option" )
+										| Not in Class
+									label( onclick="selectReportOption('Other')" )
+										input#report-other( type="radio" name="option" )
+										| Other
+									textarea.form-control
+									div.btn-toolbar.margin-top-10
+										button.btn.btn-success( type="button" onclick="reportUser()" ) Submit
+										button.btn.btn-default( type="button" onclick="showReportOption(false)" ) Cancel
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			span.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+
+	div#alert-modal.hidden
+

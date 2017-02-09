@@ -1,0 +1,84 @@
+extends layout
+
+block contentHead
+	link( href="/css/fileinput.min.css", rel="stylesheet", media="screen" )
+	script( type="text/javascript" src="/js/fileinput.min.js" )
+	script( type="text/javascript" src="/js/validator.min.js" )
+	script( type="text/javascript" src="/js/admin-grade.js" )
+
+block content
+	form
+		div.content-header.inline-block.full-width
+			- if (grade.id == '')
+				h3.pull-left New Grade
+			- else
+				h3.pull-left Edit Grade
+			- endif
+			button.btn.btn-default.pull-right( type="button" onclick="save()" ) Save
+			- if (grade.id != '')
+				button.btn.btn-default.pull-right.margin-right-10( type="button" onclick="deleteGrade()" ) Delete
+			a.btn.btn-default.btn-back.pull-right( href="/admin/grades" ) < Back
+		div#alert-block
+		div.content-body
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Grade
+				input#grade.form-control.edit-field( type="text" name="grade" value="#{grade.grade}" required)
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Image
+				div.inline-block
+					input#image( type="file" name="image" multiple=false accept="image/*" )
+					input#image-removed( type="hidden" name="image-removed" )
+			div.edit-field-item.form-group
+				p.edit-field-label.pull-left Enable
+				- if (grade.enabled == 'true')
+					input#enable( type="checkbox" name="enable" checked )
+				- else
+					input#enable( type="checkbox" name="enable" )
+				- endif
+			div
+				p.edit-field-label Links
+				- if (links)
+					- var index = 0
+					- each link in links
+						- index++
+						div.edit-link-block
+							div.pull-left.margin-right-30
+								p.edit-link-label.pull-left Syllabus
+								select.form-control.edit-link-select( id="syllabus_#{index}" index="#{index}" name="syllabuses" onchange="loadOrder(this)" required)
+									- if (syllabuses)
+										- each syllabus in syllabuses
+											- if (syllabus._id + ' ' == link.linkInfo.syllabus + ' ') 
+												option( value="#{syllabus._id}" selected) #{syllabus.title}
+											- else
+												option( value="#{syllabus._id}" ) #{syllabus.title}
+											- endif
+							div.form-group.pull-left.margin-right-30
+								p.edit-link-label.pull-left Order
+								select.form-control.edit-link-select( id="order_#{index}" name="orders" required)
+									option( value="1" ) First
+										- if (link.exGrades)
+											- each exGrade in link.exGrades
+												- if (link.linkInfo.order > exGrade.order)
+													option( value="#{exGrade.order + 1}" selected) After #{exGrade.grade_title}
+												- else
+													option( value="#{exGrade.order + 1}") After #{exGrade.grade_title}
+												- endif
+							button.btn.btn-default.pull-right.glyphicon.glyphicon-minus( type="button" onclick="removeLink(this)" )
+				div.edit-link-block
+					button.btn.btn-default.pull-right.glyphicon.glyphicon-plus( type="button" onclick="addLink(this)" )
+
+	div#wait.hidden
+		p.wait-mark.label.label-success
+			sapn.wait-animate.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+			| &nbsp;&nbsp;Please wait...
+
+	script.
+		var grade_id = '#{grade.id}';
+		var grade_order = '#{grade.order}';
+		var image_path = '#{grade.image}';
+
+	- if (syllabuses && syllabuses.length >= 0)
+		script.
+			syllabuses = !{JSON.stringify(syllabuses)};
+	- endif
+
